@@ -1,0 +1,975 @@
+@model Event_Management_System.Models.Event
+@{
+    ViewData["Title"] = "Edit Event";
+    Layout = "_AdminLayout";
+}
+
+<div class="content-section">
+    <div class="section-header">
+        <h2 class="section-title">Edit Event</h2>
+    </div>
+
+    <form method="post" asp-action="EditEvent" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="EventID" />
+        
+        @if (Model.EventImage != null)
+        {
+            <div class="form-group">
+                <label>Current Image</label>
+                <div>
+                    <img src="@Model.EventImageBase64" alt="@Model.EventName" style="max-width: 300px; border-radius: 12px; border: 2px solid #e5e7eb;">
+                </div>
+            </div>
+        }
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="EventName">Event Name <span>*</span></label>
+                <input type="text" asp-for="EventName" class="form-control" required>
+                <span asp-validation-for="EventName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Category">Category <span>*</span></label>
+                <select asp-for="Category" class="form-control" required>
+                    <option value="">Select Category</option>
+                    <option value="Concert">Concert</option>
+                    <option value="Play">Play</option>
+                    <option value="Exhibition">Exhibition</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Festival">Festival</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="EventDate">Event Start Date <span>*</span></label>
+                <div class="custom-date-picker" onclick="showCalendar('start', document.getElementById('EventDateDisplay'))">
+                    <input type="text" id="EventDateDisplay" class="form-control" placeholder="Select or type date (e.g. Mar 11, 2026)" required value="@Model.EventDate.ToString("MMM d, yyyy")">
+                    <input type="hidden" id="EventDate" name="EventDate" value="@Model.EventDate.ToString("yyyy-MM-dd")" />
+                    <i class="fas fa-calendar-alt date-icon" id="startDateIcon"></i>
+                </div>
+                <span asp-validation-for="EventDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="EndDate">Event End Date <span>*</span></label>
+                <div class="custom-date-picker" onclick="showCalendar('end', document.getElementById('EndDateDisplay'))">
+                    <input type="text" id="EndDateDisplay" class="form-control" placeholder="Select or type date (e.g. Mar 12, 2026)" required value="@Model.EndDate.ToString("MMM d, yyyy")">
+                    <input type="hidden" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+                    <i class="fas fa-calendar-alt date-icon" id="endDateIcon"></i>
+                </div>
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="StartTime">Start Time <span>*</span></label>
+                <input type="time" asp-for="StartTime" class="form-control" required>
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="EndTime">End Time <span>*</span></label>
+                <input type="time" asp-for="EndTime" class="form-control" required>
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="VenueID">Venue <span>*</span></label>
+                <select asp-for="VenueID" class="form-control" required>
+                    <option value="">Select Venue</option>
+                    @foreach (var venue in ViewBag.Venues)
+                    {
+                        <option value="@venue.VenueID" data-capacity="@venue.Capacity">@venue.VenueName - @venue.Address, @venue.City (Cap: @venue.Capacity)</option>
+                    }
+                </select>
+                <span asp-validation-for="VenueID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Price">Price ($) <span>*</span></label>
+                <input type="number" asp-for="Price" class="form-control" step="0.01" min="0" required>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="TotalSeats">Total Seats <span>*</span></label>
+                <label for="TotalSeats">Total Seats <span style="font-size: 0.8rem; font-weight: normal; color: #6b7280;">(Auto-calculated from tickets)</span></label>
+                <input type="number" asp-for="TotalSeats" class="form-control" min="1" required readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                <div id="capacityError" class="text-danger" style="display:none; font-size: 0.9rem; margin-top: 5px;"></div>
+                <span asp-validation-for="TotalSeats" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="AvailableSeats">Available Seats <span>*</span></label>
+                <label for="AvailableSeats">Available Seats <span style="font-size: 0.8rem; font-weight: normal; color: #6b7280;">(Auto-calculated from tickets)</span></label>
+                <input type="number" asp-for="AvailableSeats" class="form-control" min="0" required readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                <span asp-validation-for="AvailableSeats" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Status">Status <span>*</span></label>
+            <select asp-for="Status" class="form-control" required style="max-width: 300px;">
+                <option value="Upcoming">Upcoming</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="eventImage">Update Event Image</label>
+            <div class="file-upload-wrapper">
+                <input type="file" 
+                       id="eventImage" 
+                       name="eventImage" 
+                       class="file-upload-input" 
+                       accept="image/*"
+                       onchange="previewImage(this)">
+                <label for="eventImage" class="file-upload-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Choose New Image or Drag & Drop</span>
+                </label>
+            </div>
+            <small style="color: #6b7280; font-size: 0.85rem; margin-top: 8px; display: block;">
+                <i class="fas fa-info-circle"></i> Leave empty to keep current image. Accepted formats: JPG, PNG, GIF, WebP | Recommended: 1200x800px | Max 2MB
+            </small>
+            <div id="imagePreview" class="file-preview-container" style="display: none;">
+                <img id="previewImg" class="file-preview" src="" alt="Preview">
+                <div class="file-info">
+                    <div class="file-name" id="fileName"></div>
+                    <div class="file-size" id="fileSize"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <label style="margin: 0; font-size: 1.1rem; color: #0b1b3a;">Ticket Types</label>
+                <button type="button" class="btn-secondary" onclick="addTicketType()" style="padding: 8px 16px; font-size: 0.9rem;">
+                    <i class="fas fa-plus"></i> Add Type
+                </button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table" style="width: 100%; border-collapse: separate; border-spacing: 0 8px;">
+                    <thead>
+                        <tr style="text-align: left; color: #6b7280; font-size: 0.85rem; font-weight: 600;">
+                            <th style="padding: 0 10px;">Seat Type</th>
+                            <th style="padding: 0 10px;">Price ($)</th>
+                            <th style="padding: 0 10px;">Total Seats</th>
+                            <th style="padding: 0 10px;">Available Seats</th>
+                            <th style="padding: 0 10px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ticketTypeContainer">
+                        @if (Model.Tickets != null && Model.Tickets.Any())
+                        {
+                            var i = 0;
+                            foreach (var t in Model.Tickets)
+                            {
+                                <tr id="ticketRow_@i" style="background: #f9fafb; border-radius: 8px;">
+                                    <input type="hidden" name="Tickets.Index" value="@i" />
+                                    <input type="hidden" name="Tickets[@i].TicketID" value="@t.TicketID" />
+                                    <td style="padding: 10px;">
+                                        <input type="text" name="Tickets[@i].SeatType" value="@t.SeatType" class="form-control" placeholder="e.g. VIP" required style="margin: 0;"/>
+                                    </td>
+                                    <td style="padding: 10px;">
+                                        <input type="number" name="Tickets[@i].Price" value="@t.Price" class="form-control" placeholder="0.00" step="0.01" min="0" required style="margin: 0;"/>
+                                    </td>
+                                    <td style="padding: 10px;">
+                                        <input type="number" name="Tickets[@i].TotalQuantity" value="@t.TotalQuantity" class="form-control ticket-qty" placeholder="0" min="1" required onchange="syncAvailableSeats(@i); calculateTotals()" onkeyup="calculateTotals()" style="margin: 0;"/>
+                                    </td>
+                                    <td style="padding: 10px;">
+                                        <input type="number" name="Tickets[@i].AvailableQuantity" id="avail_@i" value="@t.AvailableQuantity" class="form-control" placeholder="0" min="0" required onblur="validateAvailableSeats(@i)" style="margin: 0;"/>
+                                    </td>
+                                    <td style="padding: 10px;">
+                                        <button type="button" onclick="removeTicketType(@i)" style="border: none; background: #fee2e2; color: #dc2626; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-save"></i>
+                Update Event
+            </button>
+            <a href="@Url.Action("Events")" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Events
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Calendar Popups for Date Selection -->
+<div id="startDateCalendar" class="admin-calendar-popup" style="display: none;">
+    <div class="calendar-header">
+        <button type="button" class="calendar-nav-btn" onclick="prevMonthStart()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <h4 id="startCalendarMonthYear">January 2024</h4>
+        <button type="button" class="calendar-nav-btn" onclick="nextMonthStart()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+    <div class="calendar-grid" id="startCalendarGrid">
+        <div class="weekday-label">Mo</div>
+        <div class="weekday-label">Tu</div>
+        <div class="weekday-label">We</div>
+        <div class="weekday-label">Th</div>
+        <div class="weekday-label">Fr</div>
+        <div class="weekday-label weekend">Sa</div>
+        <div class="weekday-label weekend">Su</div>
+    </div>
+</div>
+
+<div id="endDateCalendar" class="admin-calendar-popup" style="display: none;">
+    <div class="calendar-header">
+        <button type="button" class="calendar-nav-btn" onclick="prevMonthEnd()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <h4 id="endCalendarMonthYear">January 2024</h4>
+        <button type="button" class="calendar-nav-btn" onclick="nextMonthEnd()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+    <div class="calendar-grid" id="endCalendarGrid">
+        <div class="weekday-label">Mo</div>
+        <div class="weekday-label">Tu</div>
+        <div class="weekday-label">We</div>
+        <div class="weekday-label">Th</div>
+        <div class="weekday-label">Fr</div>
+        <div class="weekday-label weekend">Sa</div>
+        <div class="weekday-label weekend">Su</div>
+    </div>
+</div>
+
+    <style>
+        /* Custom Date Picker with Icon Inside Field */
+        .custom-date-picker {
+            position: relative;
+        }
+        .date-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            pointer-events: auto;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 10;
+        }
+        .custom-date-picker .form-control {
+            cursor: pointer;
+            padding-right: 45px !important;
+        }
+
+        /* Admin Calendar Popup - Matching Events Page */
+        .admin-calendar-popup {
+            position: absolute;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+            padding: 20px;
+            z-index: 1000;
+            min-width: 320px;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .calendar-header h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+        }
+        .calendar-nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #6b7280;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .calendar-nav-btn:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .weekday-label {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            padding: 8px;
+            text-transform: uppercase;
+        }
+        .weekday-label.weekend {
+            color: #ef4444;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            color: #111827;
+            transition: all 0.2s;
+        }
+        .calendar-day:hover:not(.selected):not(.other-month) {
+            background: #f3f4f6;
+        }
+        .calendar-day.weekend-date {
+            color: #ef4444;
+        }
+        .calendar-day.today {
+            border: 2px solid #3b82f6;
+        }
+        .calendar-day.selected {
+            background: #2563eb;
+            color: white !important;
+            font-weight: 600;
+        }
+        .calendar-day.other-month {
+            color: #d1d5db;
+        }
+    </style>
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+    // Calendar State
+    let startYear = new Date().getFullYear();
+    let startMonth = new Date().getMonth();
+    let endYear = new Date().getFullYear();
+    let endMonth = new Date().getMonth();
+    let selectedStartDate = null;
+    let selectedEndDate = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show calendar when clicking date inputs or icons
+        document.getElementById('EventDateDisplay').addEventListener('click', function(e) {
+            e.preventDefault();
+            showCalendar('start', this);
+        });
+        document.getElementById('startDateIcon').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            showCalendar('start', document.getElementById('EventDateDisplay'));
+        });
+        
+        document.getElementById('EndDateDisplay').addEventListener('click', function(e) {
+            e.preventDefault();
+            showCalendar('end', this);
+        });
+        document.getElementById('endDateIcon').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            showCalendar('end', document.getElementById('EndDateDisplay'));
+        });
+
+        // Handle manual typing in date inputs
+        document.getElementById('EventDateDisplay').addEventListener('input', function(e) {
+            updateHiddenDate('EventDate', this.value);
+        });
+        document.getElementById('EndDateDisplay').addEventListener('input', function(e) {
+            updateHiddenDate('EndDate', this.value);
+        });
+
+        // Close calendar when clicking outside
+        document.addEventListener('click', function(e) {
+            const startPopup = document.getElementById('startDateCalendar');
+            const endPopup = document.getElementById('endDateCalendar');
+            const startInput = document.getElementById('EventDateDisplay');
+            const endInput = document.getElementById('EndDateDisplay');
+            const startIcon = document.getElementById('startDateIcon');
+            const endIcon = document.getElementById('endDateIcon');
+            
+            if (startPopup && !startPopup.contains(e.target) && e.target !== startInput && e.target !== startIcon) {
+                startPopup.style.display = 'none';
+            }
+            if (endPopup && !endPopup.contains(e.target) && e.target !== endInput && e.target !== endIcon) {
+                endPopup.style.display = 'none';
+            }
+        });
+
+        function showCalendar(type, inputElement) {
+            const popup = document.getElementById(type === 'start' ? 'startDateCalendar' : 'endDateCalendar');
+            const rect = inputElement.getBoundingClientRect();
+            
+            popup.style.display = 'block';
+            popup.style.left = rect.left + 'px';
+            popup.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+            
+            if (type === 'start') {
+                renderStartCalendar();
+            } else {
+                renderEndCalendar();
+            }
+        }
+
+        function updateHiddenDate(hiddenInputId, displayValue) {
+            try {
+                const date = new Date(displayValue);
+                if (!isNaN(date.getTime())) {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    document.getElementById(hiddenInputId).value = `${year}-${month}-${day}`;
+                }
+            } catch (e) {
+                // Invalid date format, ignore
+            }
+        }
+
+        function renderStartCalendar() {
+            const grid = document.getElementById('startCalendarGrid');
+            const monthYear = document.getElementById('startCalendarMonthYear');
+            renderCalendar(grid, monthYear, startYear, startMonth, 'start');
+        }
+
+        function renderEndCalendar() {
+            const grid = document.getElementById('endCalendarGrid');
+            const monthYear = document.getElementById('endCalendarMonthYear');
+            renderCalendar(grid, monthYear, endYear, endMonth, 'end');
+        }
+
+        function renderCalendar(grid, monthYearEl, year, month, type) {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+            monthYearEl.textContent = `${monthNames[month]} ${year}`;
+            
+            // Clear existing days (keep weekday labels)
+            const existingDays = grid.querySelectorAll('.calendar-day');
+            existingDays.forEach(day => day.remove());
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = (firstDay.getDay() + 6) % 7; // Monday = 0, Sunday = 6
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day other-month';
+                grid.appendChild(emptyDay);
+            }
+            
+            // Add days of the month
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                dayEl.textContent = day;
+                
+                const date = new Date(year, month, day);
+                const dayOfWeek = date.getDay();
+                
+                // Weekend highlighting (Saturday=6, Sunday=0)
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    dayEl.classList.add('weekend-date');
+                }
+                
+                // Today highlighting
+                if (date.toDateString() === today.toDateString()) {
+                    dayEl.classList.add('today');
+                }
+                
+                // Click handler - NO DISABLED DATES
+                dayEl.addEventListener('click', () => selectDate(date, type));
+                
+                grid.appendChild(dayEl);
+            }
+        }
+
+        function selectDate(date, type) {
+            const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD
+            const displayStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            
+            if (type === 'start') {
+                selectedStartDate = date;
+                document.getElementById('EventDate').value = dateStr;
+                document.getElementById('EventDateDisplay').value = displayStr;
+                document.getElementById('startDateCalendar').style.display = 'none';
+                
+                // Clear end date if it's before new start date
+                if (selectedEndDate && selectedEndDate < date) {
+                    selectedEndDate = null;
+                    document.getElementById('EndDate').value = '';
+                    document.getElementById('EndDateDisplay').value = '';
+                }
+            } else {
+                // Validate end date
+                if (selectedStartDate && date < selectedStartDate) {
+                    alert('End date cannot be before start date');
+                    return;
+                }
+                selectedEndDate = date;
+                document.getElementById('EndDate').value = dateStr;
+                document.getElementById('EndDateDisplay').value = displayStr;
+                document.getElementById('endDateCalendar').style.display = 'none';
+            }
+        }
+
+        function prevMonthStart() {
+            startMonth--;
+            if (startMonth < 0) {
+                startMonth = 11;
+                startYear--;
+            }
+            renderStartCalendar();
+        }
+
+        function nextMonthStart() {
+            startMonth++;
+            if (startMonth > 11) {
+                startMonth = 0;
+                startYear++;
+            }
+            renderStartCalendar();
+        }
+
+        function prevMonthEnd() {
+            endMonth--;
+            if (endMonth < 0) {
+                endMonth = 11;
+                endYear--;
+            }
+            renderEndCalendar();
+        }
+
+        function nextMonthEnd() {
+            endMonth++;
+            if (endMonth > 11) {
+                endMonth = 0;
+                endYear++;
+            }
+            renderEndCalendar();
+        }    
+            // Validate initial capacity logic
+            calculateTotals();
+            
+            // Setup price field listener for auto-creating basic ticket
+            const priceField = document.getElementById('Price');
+            if (priceField) {
+                priceField.addEventListener('change', function() {
+                    autoCreateBasicTicket();
+                });
+            }
+        });
+
+        function autoCreateBasicTicket() {
+            const container = document.getElementById('ticketTypeContainer');
+            const priceField = document.getElementById('Price');
+            const priceValue = parseFloat(priceField.value);
+            
+            // Only auto-create if price is set and no tickets exist yet
+            if (priceValue > 0 && container.children.length === 0) {
+                const row = document.createElement('tr');
+                row.id = `ticketRow_${ticketIndex}`;
+                row.style.background = '#f9fafb';
+                row.style.borderRadius = '8px';
+                
+                row.innerHTML = `
+                    <input type="hidden" name="Tickets.Index" value="${ticketIndex}" />
+                    <input type="hidden" name="Tickets[${ticketIndex}].TicketID" value="0" />
+                    <td style="padding: 10px;">
+                        <input type="text" name="Tickets[${ticketIndex}].SeatType" class="form-control" value="Basic" required style="margin: 0;"/>
+                    </td>
+                    <td style="padding: 10px;">
+                        <input type="number" name="Tickets[${ticketIndex}].Price" class="form-control" value="${priceValue.toFixed(2)}" step="0.01" min="0" required style="margin: 0;"/>
+                    </td>
+                    <td style="padding: 10px;">
+                        <input type="number" name="Tickets[${ticketIndex}].TotalQuantity" class="form-control ticket-qty" placeholder="0" min="1" required onchange="syncAvailableSeats(${ticketIndex}); calculateTotals();" onkeyup="calculateTotals()" style="margin: 0;"/>
+                    </td>
+                    <td style="padding: 10px;">
+                        <input type="number" name="Tickets[${ticketIndex}].AvailableQuantity" id="avail_${ticketIndex}" class="form-control" placeholder="0" min="0" required onblur="validateAvailableSeats(${ticketIndex})" style="margin: 0;"/>
+                    </td>
+                    <td style="padding: 10px;">
+                        <button type="button" onclick="removeTicketType(${ticketIndex})" style="border: none; background: #fee2e2; color: #dc2626; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+
+                container.appendChild(row);
+                ticketIndex++;
+            }
+        }
+
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    fileName.textContent = file.name;
+                    fileSize.textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+                    preview.style.display = 'flex';
+                };
+                
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        let ticketIndex = @(Model.Tickets != null ? Model.Tickets.Count : 0);
+
+        function addTicketType() {
+            const container = document.getElementById('ticketTypeContainer');
+            const row = document.createElement('tr');
+            row.id = `ticketRow_${ticketIndex}`;
+            row.style.background = '#f9fafb';
+            row.style.borderRadius = '8px';
+            
+            row.innerHTML = `
+                <input type="hidden" name="Tickets.Index" value="${ticketIndex}" />
+                <input type="hidden" name="Tickets[${ticketIndex}].TicketID" value="0" />
+                <td style="padding: 10px;">
+                    <input type="text" name="Tickets[${ticketIndex}].SeatType" class="form-control" placeholder="e.g. VIP" required style="margin: 0;"/>
+                </td>
+                <td style="padding: 10px;">
+                    <input type="number" name="Tickets[${ticketIndex}].Price" class="form-control" placeholder="0.00" step="0.01" min="0" required style="margin: 0;"/>
+                </td>
+                <td style="padding: 10px;">
+                    <input type="number" name="Tickets[${ticketIndex}].TotalQuantity" class="form-control ticket-qty" placeholder="0" min="1" required onchange="syncAvailableSeats(${ticketIndex}); calculateTotals();" onkeyup="calculateTotals()" style="margin: 0;"/>
+                </td>
+                <td style="padding: 10px;">
+                    <input type="number" name="Tickets[${ticketIndex}].AvailableQuantity" id="avail_${ticketIndex}" class="form-control" placeholder="0" min="0" required onblur="validateAvailableSeats(${ticketIndex})" style="margin: 0;"/>
+                </td>
+                <td style="padding: 10px;">
+                    <button type="button" onclick="removeTicketType(${ticketIndex})" style="border: none; background: #fee2e2; color: #dc2626; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+            `;
+
+            container.appendChild(row);
+            ticketIndex++;
+        }
+
+        function removeTicketType(index) {
+            const row = document.getElementById(`ticketRow_${index}`);
+            row.remove();
+            calculateTotals();
+        }
+
+        function syncAvailableSeats(index) {
+            const totalInput = document.querySelector(`input[name="Tickets[${index}].TotalQuantity"]`);
+            const availInput = document.getElementById(`avail_${index}`);
+            if (totalInput && availInput) {
+                // Auto-set available to total when total changes
+                availInput.value = totalInput.value;
+            }
+        }
+
+        function validateAvailableSeats(index) {
+            const totalInput = document.querySelector(`input[name="Tickets[${index}].TotalQuantity"]`);
+            const availInput = document.getElementById(`avail_${index}`);
+            
+            if (totalInput && availInput) {
+                const total = parseInt(totalInput.value) || 0;
+                let avail = parseInt(availInput.value) || 0;
+                
+                // Prevent available from exceeding total
+                if (avail > total) {
+                    availInput.value = total;
+                }
+                
+                // Prevent negative values
+                if (avail < 0) {
+                    availInput.value = 0;
+                }
+            }
+        }
+
+        function calculateTotals() {
+            let totalSeats = 0;
+            let availableSeats = 0;
+            
+            // Get all ticket type rows
+            const totalInputs = document.querySelectorAll('input[name^="Tickets"][name$=".TotalQuantity"]');
+            
+            totalInputs.forEach((totalInput) => {
+                // Extract the index from the input name (e.g., "Tickets[0].TotalQuantity")
+                const match = totalInput.name.match(/Tickets\[(\d+)\]\.TotalQuantity/);
+                if (match) {
+                    const index = match[1];
+                    const availInput = document.querySelector(`input[name="Tickets[${index}].AvailableQuantity"]`);
+                    
+                    const total = parseInt(totalInput.value) || 0;
+                    const avail = availInput ? (parseInt(availInput.value) || 0) : 0;
+                    
+                    totalSeats += total;
+                    availableSeats += avail;
+                }
+            });
+
+            // Update event fields
+            document.getElementById('TotalSeats').value = totalSeats;
+            document.getElementById('AvailableSeats').value = availableSeats;
+            
+            // Validate against venue capacity
+            validateCapacity(totalSeats);
+        }
+
+        function validateCapacity(currentTotal) {
+            const venueSelect = document.getElementById('VenueID');
+            const selectedOption = venueSelect.options[venueSelect.selectedIndex];
+            const capacityError = document.getElementById('capacityError');
+            const submitBtn = document.querySelector('button[type="submit"]');
+
+            if (selectedOption && selectedOption.value) {
+                const maxCapacity = parseInt(selectedOption.getAttribute('data-capacity')) || 0;
+                
+                if (currentTotal > maxCapacity) {
+                    capacityError.textContent = `Total seats (${currentTotal}) exceeds venue capacity (${maxCapacity})`;
+                    capacityError.style.display = 'block';
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.5';
+                    submitBtn.style.cursor = 'not-allowed';
+                } else {
+                    capacityError.style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.cursor = 'pointer';
+                }
+            }
+        }
+
+        document.getElementById('VenueID').addEventListener('change', function() {
+            // Re-validate on venue change
+            calculateTotals();
+        });
+
+        // Calendar state
+        let startDateState = {
+            currentMonth: new Date().getMonth(),
+            currentYear: new Date().getFullYear()
+        };
+        let endDateState = {
+            currentMonth: new Date().getMonth(),
+            currentYear: new Date().getFullYear()
+        };
+
+        // Add click handlers for date inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const startDateDisplay = document.getElementById('EventDateDisplay');
+            const endDateDisplay = document.getElementById('EndDateDisplay');
+            
+            if (startDateDisplay) {
+                startDateDisplay.addEventListener('click', () => showCalendar('start'));
+                startDateDisplay.parentElement.querySelector('.date-icon').addEventListener('click', () => showCalendar('start'));
+            }
+            
+            if (endDateDisplay) {
+                endDateDisplay.addEventListener('click', () => showCalendar('end'));
+                endDateDisplay.parentElement.querySelector('.date-icon').addEventListener('click', () => showCalendar('end'));
+            }
+
+            // Close calendar when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.custom-date-picker') && !e.target.closest('.admin-calendar-popup')) {
+                    document.getElementById('startDateCalendar').style.display = 'none';
+                    document.getElementById('endDateCalendar').style.display = 'none';
+                }
+            });
+        });
+
+        function showCalendar(type) {
+            const calendarId = type === 'start' ? 'startDateCalendar' : 'endDateCalendar';
+            const otherCalendarId = type === 'start' ? 'endDateCalendar' : 'startDateCalendar';
+            const calendar = document.getElementById(calendarId);
+            const inputId = type === 'start' ? 'EventDateDisplay' : 'EndDateDisplay';
+            const input = document.getElementById(inputId);
+            
+            // Close other calendar
+            document.getElementById(otherCalendarId).style.display = 'none';
+            
+            // Toggle current calendar
+            if (calendar.style.display === 'block') {
+                calendar.style.display = 'none';
+                return;
+            }
+            
+            // Position calendar below input
+            const rect = input.getBoundingClientRect();
+            calendar.style.position = 'absolute';
+            calendar.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+            calendar.style.left = rect.left + 'px';
+            calendar.style.display = 'block';
+            
+            // Render calendar
+            if (type === 'start') {
+                renderStartCalendar();
+            } else {
+                renderEndCalendar();
+            }
+        }
+
+        function renderStartCalendar() {
+            const grid = document.getElementById('startCalendarGrid');
+            const monthYearEl = document.getElementById('startCalendarMonthYear');
+            renderCalendar(grid, monthYearEl, startDateState.currentYear, startDateState.currentMonth, 'start');
+        }
+
+        function renderEndCalendar() {
+            const grid = document.getElementById('endCalendarGrid');
+            const monthYearEl = document.getElementById('endCalendarMonthYear');
+            renderCalendar(grid, monthYearEl, endDateState.currentYear, endDateState.currentMonth, 'end');
+        }
+
+        function renderCalendar(grid, monthYearEl, year, month, type) {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            monthYearEl.textContent = `${monthNames[month]} ${year}`;
+            
+            // Clear existing days
+            const existingDays = grid.querySelectorAll('.calendar-day');
+            existingDays.forEach(day => day.remove());
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = (firstDay.getDay() + 6) % 7; // Monday = 0
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day other-month';
+                grid.appendChild(emptyDay);
+            }
+            
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                dayEl.textContent = day;
+                
+                const date = new Date(year, month, day);
+                const dayOfWeek = date.getDay();
+                
+                // Weekend highlighting
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    dayEl.classList.add('weekend-date');
+                }
+                
+                // Click handler
+                dayEl.addEventListener('click', () => selectDate(date, type));
+                
+                grid.appendChild(dayEl);
+            }
+        }
+
+        function selectDate(date, type) {
+            const dateStr = date.toISOString().split('T')[0];
+            const displayDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            
+            if (type === 'start') {
+                document.getElementById('EventDate').value = dateStr;
+                document.getElementById('EventDateDisplay').value = displayDate;
+                document.getElementById('startDateCalendar').style.display = 'none';
+                
+                // Validate: End date should not be before start date
+                const endDateValue = document.getElementById('EndDate').value;
+                if (endDateValue && new Date(endDateValue) < date) {
+                    document.getElementById('EndDate').value = dateStr;
+                    document.getElementById('EndDateDisplay').value = displayDate;
+                }
+            } else {
+                const startDateValue = document.getElementById('EventDate').value;
+                if (startDateValue && date < new Date(startDateValue)) {
+                    alert('End date cannot be before start date');
+                    return;
+                }
+                document.getElementById('EndDate').value = dateStr;
+                document.getElementById('EndDateDisplay').value = displayDate;
+                document.getElementById('endDateCalendar').style.display = 'none';
+            }
+        }
+
+        function prevMonthStart() {
+            if (startDateState.currentMonth === 0) {
+                startDateState.currentMonth = 11;
+                startDateState.currentYear--;
+            } else {
+                startDateState.currentMonth--;
+            }
+            renderStartCalendar();
+        }
+
+        function nextMonthStart() {
+            if (startDateState.currentMonth === 11) {
+                startDateState.currentMonth = 0;
+                startDateState.currentYear++;
+            } else {
+                startDateState.currentMonth++;
+            }
+            renderStartCalendar();
+        }
+
+        function prevMonthEnd() {
+            if (endDateState.currentMonth === 0) {
+                endDateState.currentMonth = 11;
+                endDateState.currentYear--;
+            } else {
+                endDateState.currentMonth--;
+            }
+            renderEndCalendar();
+        }
+
+        function nextMonthEnd() {
+            if (endDateState.currentMonth === 11) {
+                endDateState.currentMonth = 0;
+                endDateState.currentYear++;
+            } else {
+                endDateState.currentMonth++;
+            }
+            renderEndCalendar();
+        }
+    </script>

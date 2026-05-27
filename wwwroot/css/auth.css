@@ -1,0 +1,649 @@
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: Inter, sans-serif;
+}
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+
+/* Background */
+.background {
+  position: fixed;
+  inset: 0;
+  background: url("../images/bg-auth.jpg") center/cover;
+  filter: blur(12px);
+  transform: scale(1.1);
+}
+
+/* Layout */
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Glass Card */
+.glass-card {
+  width: 380px;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  transition: height 0.3s ease;
+}
+
+/* Custom Select Dropdown */
+.select-wrapper {
+  position: relative;
+  width: 110px;
+  display: flex;
+  align-items: center; /* Center the select element vertically */
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.country-select {
+  width: 100%;
+  padding: 12px 30px 12px 12px; /* Match input padding exactly */
+  border-radius: 10px;
+  border: none;
+  background: white;
+  font-family: inherit;
+  font-size: 14px; /* Match input font size */
+  color: #333;
+  border-radius: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  outline: none;
+  height: auto; /* Let padding define height like inputs */
+  background-image: none !important;
+}
+
+/* Custom Arrow - Now single source of truth */
+.select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%; /* Center vertically */
+  /* transform: translateY(-50%); */
+  width: 12px;
+  height: 12px;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+}
+
+.country-select:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Scrollbar specific for select dropdown (Chrome/Edge/Safari) */
+.country-select option {
+  padding: 8px;
+}
+
+/* Logo */
+.logo {
+  text-align: center;
+}
+.logo img {
+  width: 64px;
+  margin-bottom: 10px;
+}
+
+/* Social */
+.social {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0 0 0;
+}
+.social button {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  background: #fff;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.social button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Social Icons Colors */
+.social button .fa-apple {
+  color: #000;
+}
+.social button .fa-google {
+  background: conic-gradient(
+      from -45deg,
+      #ea4335 110deg,
+      #4285f4 90deg 180deg,
+      #34a853 180deg 270deg,
+      #fbbc05 270deg
+    )
+    73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.social button .fa-twitter {
+  color: #1da1f2;
+}
+
+/* Inputs & Select */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* Password View Icon */
+.password {
+  position: relative;
+}
+.password i {
+  position: absolute;
+  right: 14px;
+  top: 24px;
+  cursor: pointer;
+  color: #333;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  z-index: 10;
+  pointer-events: auto;
+}
+.password i:hover {
+  opacity: 1;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary Button - Matching About Page .btn-dark */
+.btn-primary {
+  background: #0b1b3a;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(11, 27, 58, 0.2);
+  border-radius: 50px; /* Pill shape matching About page */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+/* Shine effect (from About page) */
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.37),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
+  pointer-events: none;
+}
+
+.btn-primary:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-primary:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(11, 27, 58, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  margin-top: 0; /* Reset for grid use */
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Wizard Step Layouts */
+.step-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.step-actions button {
+  margin-top: 0;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 24px 0 16px 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9em;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.divider::before {
+  margin-right: 0.5em;
+}
+.divider::after {
+  margin-left: 0.5em;
+}
+
+/* Custom Checkbox (Remember Me) */
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 20px; /* Space for custom box */
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.9em;
+}
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 12px;
+  width: 12px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.2s;
+}
+.checkbox-container:hover input ~ .checkmark {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+.checkbox-container .checkmark:after {
+  left: 4px;
+  top: 1px;
+  width: 2px;
+  height: 6px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Options container override needs readjustment */
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 0.9em;
+}
+.options a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+  opacity: 0.9;
+}
+.options a:hover {
+  color: #ddd;
+  opacity: 1;
+}
+
+/* Chip Grid (Step 2) */
+.section-label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 1em;
+  font-weight: 500;
+}
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.chip {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.2s;
+  user-select: none;
+}
+.chip:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.chip.selected {
+  background: #007bff;
+  border-color: #007bff;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4);
+}
+
+/* Footer Links */
+.switch {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.9em;
+}
+.switch a {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.switch a:hover {
+  color: #ddd;
+}
+
+/* Back Arrow (Step 2) */
+.back-arrow {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2em;
+  cursor: pointer;
+  opacity: 0.8;
+  padding: 0;
+  width: auto;
+  margin: 0;
+  height: auto;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  box-shadow: none;
+}
+.back-arrow:hover {
+  opacity: 1;
+  transform: translateX(-3px);
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Adjust Step 2 spacing */
+#step-2 {
+  padding-top: 10px;
+}
+
+#step-3 {
+  padding-top: 10px;
+}
+
+/* Profile Upload Container */
+.profile-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.profile-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px dashed rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.profile-preview:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-outline {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-outline:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Custom Toast Notification */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  min-width: 300px;
+  max-width: 400px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 9999;
+  animation: slideInRight 0.3s ease-out;
+  border-left: 4px solid;
+}
+
+.toast-notification.error {
+  border-left-color: #dc3545;
+}
+
+.toast-notification.success {
+  border-left-color: #10b981;
+}
+
+.toast-notification.warning {
+  border-left-color: #f59e0b;
+}
+
+.toast-notification.info {
+  border-left-color: #3b82f6;
+}
+
+.toast-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.toast-notification.error .toast-icon {
+  color: #dc3545;
+}
+
+.toast-notification.success .toast-icon {
+  color: #10b981;
+}
+
+.toast-notification.warning .toast-icon {
+  color: #f59e0b;
+}
+
+.toast-notification.info .toast-icon {
+  color: #3b82f6;
+}
+
+.toast-content {
+  flex: 1;
+  color: #1f2937;
+}
+
+.toast-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.toast-message {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.toast-close:hover {
+  color: #1f2937;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+.toast-notification.hiding {
+  animation: slideOutRight 0.3s ease-in forwards;
+}
+
+/* ===============================
+   PASSWORD STRENGTH INDICATOR
+================================ */
+.password-strength-container {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.strength-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.strength-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: #ef4444;
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
+  border-radius: 3px;
+}
+
+.strength-text-container {
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.strength-text {
+  font-weight: 600;
+  transition: color 0.3s ease;
+}

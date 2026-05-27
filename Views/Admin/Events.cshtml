@@ -1,0 +1,94 @@
+@model IEnumerable<Event_Management_System.Models.Event>
+@{
+    ViewData["Title"] = "Manage Events";
+    Layout = "_AdminLayout";
+}
+
+<div class="content-section">
+    <div class="section-header">
+        <h2 class="section-title">All Events</h2>
+        <div class="section-actions">
+            <a href="@Url.Action("CreateEvent")" class="btn-primary">
+                <i class="fas fa-plus"></i>
+                Add New Event
+            </a>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th class="text-center">Image</th>
+                    <th>Event Name</th>
+                    <th>Category</th>
+                    <th class="text-center">Date</th>
+                    <th>Venue</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Seats</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center" style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var evt in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @if (evt.EventImage != null)
+                            {
+                                <img src="@evt.EventImageBase64" alt="@evt.EventName" class="table-image">
+                            }
+                            else
+                            {
+                                <div class="table-image" style="background: #e5e7eb; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image" style="color: #9ca3af;"></i>
+                                </div>
+                            }
+                        </td>
+                        <td><strong style="color: #0b1b3a;">@evt.EventName</strong></td>
+                        <td>@evt.Category</td>
+                        <td class="text-center">
+                            @if (evt.EventDate.Date == evt.EndDate.Date)
+                            {
+                                @evt.EventDate.ToString("MMM dd, yyyy")
+                            }
+                            else
+                            {
+                                <text>@evt.EventDate.ToString("MMM dd") - @evt.EndDate.ToString("MMM dd, yyyy")</text>
+                            }
+                        </td>
+                        <td>@evt.Venue?.VenueName</td>
+                        <td class="text-center">£@evt.Price.ToString("F2")</td>
+                        <td class="text-center">@evt.AvailableSeats / @evt.TotalSeats</td>
+                        <td class="text-center">
+                            <span class="status-badge @(evt.Status.ToLower())">@evt.Status</span>
+                        </td>
+                        <td class="text-center">
+                            <div class="table-actions">
+                                <a href="@Url.Action("EditEvent", new { id = evt.EventID })" class="btn-edit btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <button type="button" class="btn-danger btn-sm" onclick="showDeleteModal('@Url.Action("DeleteEvent", new { id = evt.EventID })')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <p>No events found</p>
+            <a href="@Url.Action("CreateEvent")" class="btn-create">
+                <i class="fas fa-plus-circle"></i>
+                Create First Event
+            </a>
+        </div>
+    }
+</div>

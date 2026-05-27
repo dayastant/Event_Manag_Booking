@@ -1,0 +1,207 @@
+@model Event_Management_System.Models.ViewModels.RegisterViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Register | MCC</title>
+    <link rel="stylesheet" href="~/css/auth.css" />
+    <link rel="stylesheet" href="~/css/dropdown-global.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+    <div class="glass-card">
+        <div class="logo">
+            <img src="~/images/logo.png" alt="Logo">
+            <h2>Create account</h2>
+            <!-- <p>Please fill in the details to register.</p> -->
+        </div>
+
+        <form asp-action="Register" asp-controller="Account" method="post" id="register-form" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="background: rgba(220,53,69,0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; color: #dc3545; font-size: 0.9rem;"></div>
+
+            <!-- Step 1: Personal Details -->
+            <div id="step-1">
+                <label class="section-label" style="text-align: center;">Please fill your Personal Details</label>
+            
+                <!-- Name fields side by side -->
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <input asp-for="FirstName" type="text" id="firstname" placeholder="First name" required>
+                        <span asp-validation-for="FirstName" class="text-danger" style="display: block; margin-top: -10px; margin-bottom: 10px; font-size: 0.85rem; color: #dc3545;"></span>
+                    </div>
+                    <div style="flex: 1;">
+                        <input asp-for="LastName" type="text" id="lastname" placeholder="Last name" required>
+                        <span asp-validation-for="LastName" class="text-danger" style="display: block; margin-top: -10px; margin-bottom: 10px; font-size: 0.85rem; color: #dc3545;"></span>
+                    </div>
+                </div>
+
+                <input asp-for="Email" type="email" id="email" placeholder="Email address" required>
+                <span asp-validation-for="Email" class="text-danger" style="display: block; margin-top: -10px; margin-bottom: 10px; font-size: 0.85rem; color: #dc3545;"></span>
+
+                <!-- Password fields side by side -->
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <div class="password">
+                            <input asp-for="Password" type="password" id="password" placeholder="Password" maxlength="15" required>
+                            <i class="fa fa-eye" onclick="togglePassword(this)"></i>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger" style="display: block; margin-top: -10px; margin-bottom: 10px; font-size: 0.85rem; color: #dc3545;"></span>
+                    </div>
+                    <div style="flex: 1;">
+                        <div class="password">
+                            <input asp-for="ConfirmPassword" type="password" id="confirmpassword" placeholder="Confirm password" maxlength="15" required>
+                            <i class="fa fa-eye" onclick="togglePassword(this)"></i>
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger" style="display: block; margin-top: -10px; margin-bottom: 10px; font-size: 0.85rem; color: #dc3545;"></span>
+                    </div>
+                </div>
+
+                <!-- Phone number with country code -->
+                <div style="display: flex; gap: 8px; align-items: flex-start;">
+                    <div class="select-wrapper">
+                        <select id="countryCode" class="country-select">
+                            <option value="+93">🇦🇫 +93</option>
+                            <option value="+355">🇦🇱 +355</option>
+                            <option value="+213">🇩🇿 +213</option>
+                            <option value="+54">🇦🇷 +54</option>
+                            <option value="+61">🇦🇺 +61</option>
+                            <option value="+43">🇦🇹 +43</option>
+                            <option value="+880">🇧🇩 +880</option>
+                            <option value="+32">🇧🇪 +32</option>
+                            <option value="+55">🇧🇷 +55</option>
+                            <option value="+1">🇨🇦 +1</option>
+                            <option value="+56">🇨🇱 +56</option>
+                            <option value="+86">🇨🇳 +86</option>
+                            <option value="+57">🇨🇴 +57</option>
+                            <option value="+45">🇩🇰 +45</option>
+                            <option value="+20">🇬🇪 +20</option>
+                            <option value="+44" selected>🇬🇧 +44</option>
+                            <option value="+358">🇫🇮 +358</option>
+                            <option value="+33">🇫🇷 +33</option>
+                            <option value="+49">🇩🇪 +49</option>
+                            <option value="+30">🇬🇷 +30</option>
+                            <option value="+852">🇭🇰 +852</option>
+                            <option value="+36">🇭🇺 +36</option>
+                            <option value="+91">🇮🇳 +91</option>
+                            <option value="+62">🇮🇩 +62</option>
+                            <option value="+98">🇮🇷 +98</option>
+                            <option value="+353">🇮🇪 +353</option>
+                            <option value="+972">🇮🇱 +972</option>
+                            <option value="+39">🇮🇹 +39</option>
+                            <option value="+81">🇯🇵 +81</option>
+                            <option value="+254">🇰🇪 +254</option>
+                            <option value="+82">🇰🇷 +82</option>
+                            <option value="+60">🇲🇾 +60</option>
+                            <option value="+52">🇲🇽 +52</option>
+                            <option value="+31">🇳🇱 +31</option>
+                            <option value="+64">🇳🇿 +64</option>
+                            <option value="+234">🇳🇬 +234</option>
+                            <option value="+47">🇳🇴 +47</option>
+                            <option value="+92">🇵🇰 +92</option>
+                            <option value="+51">🇵🇪 +51</option>
+                            <option value="+63">🇵🇭 +63</option>
+                            <option value="+48">🇵🇱 +48</option>
+                            <option value="+351">🇵🇹 +351</option>
+                            <option value="+974">🇶🇦 +974</option>
+                            <option value="+7">🇷🇺 +7</option>
+                            <option value="+966">🇸🇦 +966</option>
+                            <option value="+65">🇸🇬 +65</option>
+                            <option value="+27">🇿🇦 +27</option>
+                            <option value="+34">🇪🇸 +34</option>
+                            <option value="+94">🇱🇰 +94</option>
+                            <option value="+46">🇸🇪 +46</option>
+                            <option value="+41">🇨🇭 +41</option>
+                            <option value="+886">🇹🇼 +886</option>
+                            <option value="+66">🇹🇭 +66</option>
+                            <option value="+90">🇹🇷 +90</option>
+                            <option value="+971">🇦🇪 +971</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+1">🇳🇿 +1</option>
+                            <option value="+84">🇻🇳 +84</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <input asp-for="PhoneNumber" type="tel" id="phone" placeholder="Phone number (optional)" maxlength="20">
+                        <span asp-validation-for="PhoneNumber" class="text-danger" style="display: block; margin-top: -10px; margin-bottom: 10px; font-size: 0.85rem; color: #dc3545;"></span>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary" onclick="goToProfileStep()">Next</button>
+
+                <div class="divider">OR</div>
+
+                <div class="social">
+                    <button type="button" onclick="showComingSoon('Apple')"><i class="fab fa-apple"></i></button>
+                    <button type="button" onclick="showComingSoon('Google')"><i class="fab fa-google"></i></button>
+                    <button type="button" onclick="showComingSoon('Twitter')"><i class="fab fa-twitter"></i></button>
+                </div>
+
+                <p class="switch">
+                    Already have an account?
+                    <a href="@Url.Action("Login", "Account")">Login</a>
+                </p>    
+            </div>
+
+            <!-- Step 2: Profile Picture Upload -->
+            <div id="step-2" class="hidden">
+                <button type="button" class="back-arrow" onclick="prevStep(1)"><i class="fas fa-arrow-left"></i></button>
+                
+                <label class="section-label" style="text-align: center;">Upload Profile Picture</label>
+                <p style="color: #c5c5c5ff; font-size: 0.9rem; margin-bottom: 1.5rem; text-align: center;">Add a profile picture or skip to use your initials</p>
+                
+                <div class="profile-upload-container">
+                    <div class="profile-preview" id="profilePreview">
+                        <i class="fas fa-user" style="font-size: 3rem; color: #9ca3af;"></i>
+                    </div>
+                    <input asp-for="ProfilePicture" type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="previewProfilePicture(this)">
+                    <button type="button" class="btn-outline" onclick="document.getElementById('profilePictureInput').click()">
+                        <i class="fas fa-camera"></i> Choose Photo
+                    </button>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+                    <button type="button" class="btn-primary" style="flex: 1;" onclick="skipProfilePicture()">Skip</button>
+                    <button type="button" class="btn-primary" style="flex: 1;" onclick="goToPreferencesStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Event Preferences -->
+            <div id="step-3" class="hidden">
+                <button type="button" class="back-arrow" onclick="prevStep(2)"><i class="fas fa-arrow-left"></i></button>
+                
+                <label class="section-label" style="text-align: center;">Select your event preferences:</label>
+                
+                <div class="chip-grid">
+                    <div class="chip" onclick="togglePreference(this)" data-value="music">Music</div>
+                    <div class="chip" onclick="togglePreference(this)" data-value="theatre">Theatre</div>
+                    <div class="chip" onclick="togglePreference(this)" data-value="exhibition">Exhibition</div>
+                    <div class="chip" onclick="togglePreference(this)" data-value="workshop">Workshop</div>
+                    <div class="chip" onclick="togglePreference(this)" data-value="sports">Sports</div>
+                    <div class="chip" onclick="togglePreference(this)" data-value="comedy">Comedy</div>
+                </div>
+                
+                <!-- Hidden input to store selected values -->
+                <input asp-for="PreferredCategory" type="hidden" id="preferences-input" name="PreferredCategory">
+
+                <button type="submit" class="btn-primary">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/password-strength.js"></script>
+<script src="~/js/auth.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<link rel="stylesheet" href="~/css/about.css">
+
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="container">
+        <h1 class="hero-heading">About CulturaPass</h1>
+        <p class="hero-subheading">
+            The Smart Event Management and Ticketing System is designed to modernize how local cultural events are managed and accessed by the public. It allows community members to register, explore upcoming concerts, plays, exhibitions, and workshops, and book tickets easily online. Guests can browse events freely, while registration is required to complete bookings and access personalized features.
+        </p>
+        <a href="@Url.Action("Contact", "Home")" class="btn-dark">GET IN TOUCH</a>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="about-stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h2 class="stat-number">1500+</h2>
+                <p class="stat-label">EVENTS HOSTED</p>
+            </div>
+            <div class="stat-item">
+                <h2 class="stat-number">50K+</h2>
+                <p class="stat-label">TICKETS SOLD</p>
+            </div>
+            <div class="stat-item">
+                <h2 class="stat-number">25+</h2>
+                <p class="stat-label">VENUES</p>
+            </div>
+            <div class="stat-item">
+                <h2 class="stat-number">10K+</h2>
+                <p class="stat-label">HAPPY ATTENDEES</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="hori-line"></div>
+
+<!-- Team Image Section -->
+<section class="about-team-image">
+    <div class="container-full">
+        <img src="~/images/pic-01.jpg" alt="Cultural Events and Community" class="team-photo">
+    </div>
+</section>
+
+<div class="hori-line"></div>
+
+<!-- Mission Section -->
+<section class="about-mission">
+    <div class="container">
+        <h2 class="mission-heading">
+            Connecting communities through culture. We
+            bring together event organizers, artists, and
+            culture enthusiasts to create memorable
+            experiences across our metropolitan area.
+        </h2>
+        <p class="mission-description">
+            CulturaPass is the metropolitan cultural council's digital platform designed to
+            modernize event discovery and ticketing. From concerts to exhibitions,
+            we make it simple for everyone to access cultural experiences.
+        </p>
+        <a href="@Url.Action("Index", "Events")" class="btn-dark">BROWSE EVENTS</a>
+    </div>
+</section>
+
+<div class="hori-line"></div>
+
+<!-- Differentiation Section -->
+<section class="about-different">
+    <div class="container">
+        <h2 class="section-heading">Why Choose CulturaPass?</h2>
+        <div class="different-grid">
+            <div class="different-column">
+                <p class="different-text">
+                    As the official platform of our metropolitan cultural council,
+                    CulturaPass provides a centralized hub for all cultural activities
+                    in our community. We work directly with venues, organizers, and
+                    artists to ensure every event is accurately represented and
+                    easily accessible to the public.
+                </p>
+                <p class="different-text">
+                    Whether you're a first-time visitor exploring our cultural scene
+                    or a regular attendee, our platform is designed for everyone.
+                    Guests can browse and discover events freely, while registered
+                    members enjoy seamless online booking and ticket management.
+                </p>
+            </div>
+            <div class="different-column">
+                <ul class="different-list">
+                    <li>Browse concerts, plays, exhibitions, and workshops</li>
+                    <li>Secure online ticket booking and payment</li>
+                    <li>Real-time seat availability and event updates</li>
+                    <li>Digital e-tickets with QR code verification</li>
+                    <li>Easy registration for community members</li>
+                    <li>24/7 access to event information</li>
+                </ul>
+                <p class="different-text">
+                    Our mission is to make culture accessible to everyone in our
+                    community. By digitizing the event discovery and booking
+                    process, we're removing barriers and helping more people
+                    participate in our vibrant cultural life.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="hori-line"></div>
+
+<!-- Process Section -->
+<section class="about-process">
+    <div class="container">
+        <h2 class="section-heading">How It Works</h2>
+        <p class="section-description">
+            Discover and book your next cultural experience in four simple steps.<br>
+            Join thousands of community members enjoying seamless event access.
+        </p>
+        
+        <div class="process-grid">
+            <div class="process-card">
+                <div class="process-badge">
+                    <span class="badge-number">1</span>
+                </div>
+                <h3 class="process-title">Discover Events</h3>
+                <ul class="process-list">
+                    <li>Browse concerts & plays</li>
+                    <li>Explore exhibitions</li>
+                    <li>Find workshops</li>
+                </ul>
+            </div>
+            
+            <div class="process-card">
+                <div class="process-badge">
+                    <span class="badge-number">2</span>
+                </div>
+                <h3 class="process-title">Register Account</h3>
+                <ul class="process-list">
+                    <li>Quick sign-up</li>
+                    <li>Secure profile</li>
+                    <li>Community access</li>
+                </ul>
+            </div>
+            
+            <div class="process-card">
+                <div class="process-badge">
+                    <span class="badge-number">3</span>
+                </div>
+                <h3 class="process-title">Book Tickets</h3>
+                <ul class="process-list">
+                    <li>Select your seats</li>
+                    <li>Secure payment</li>
+                    <li>Instant confirmation</li>
+                </ul>
+            </div>
+            
+            <div class="process-card">
+                <div class="process-badge">
+                    <span class="badge-number">4</span>
+                </div>
+                <h3 class="process-title">Enjoy Experience</h3>
+                <ul class="process-list">
+                    <li>Digital e-tickets</li>
+                    <li>QR code entry</li>
+                    <li>Share reviews</li>
+                </ul>
+            </div>
+        </div>
+        
+        @if (!Context.Session.GetInt32("MemberID").HasValue)
+        {
+            <div class="process-cta">
+                <a href="@Url.Action("Login", "Account")" class="btn-dark">GET STARTED</a>
+            </div>
+        }
+    </div>
+</section>

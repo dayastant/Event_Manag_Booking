@@ -1,0 +1,168 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-title">Total Events</div>
+                <div class="stat-value">@ViewBag.TotalEvents</div>
+                <div class="stat-label">Active in system</div>
+            </div>
+            <div class="stat-icon blue">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-title">Total Users</div>
+                <div class="stat-value">@ViewBag.TotalUsers</div>
+                <div class="stat-label">Registered members</div>
+            </div>
+            <div class="stat-icon green">
+                <i class="fas fa-users"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-title">Total Bookings</div>
+                <div class="stat-value">@ViewBag.TotalBookings</div>
+                <div class="stat-label">Tickets sold</div>
+            </div>
+            <div class="stat-icon purple">
+                <i class="fas fa-ticket-alt"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-title">Total Reviews</div>
+                <div class="stat-value">@ViewBag.TotalReviews</div>
+                <div class="stat-label">User feedback</div>
+            </div>
+            <div class="stat-icon orange">
+                <i class="fas fa-star"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-section">
+    <div class="section-header">
+        <h2 class="section-title">Recent Events</h2>
+        <a href="@Url.Action("Events", "Admin")" class="btn-primary">
+            <i class="fas fa-calendar-alt"></i>
+            View All Events
+        </a>
+    </div>
+
+    @if (ViewBag.RecentEvents != null && ViewBag.RecentEvents.Count > 0)
+    {
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Event Name</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Venue</th>
+                    <th>Seats</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var evt in ViewBag.RecentEvents)
+                {
+                    <tr>
+                        <td>
+                            <strong style="color: #0b1b3a;">@evt.EventName</strong>
+                        </td>
+                        <td>@evt.Category</td>
+                        <td>@evt.EventDate.ToString("MMM dd, yyyy")</td>
+                        <td>@evt.Venue?.VenueName</td>
+                        <td>@evt.AvailableSeats / @evt.TotalSeats</td>
+                        <td>
+                            <span class="status-badge @(evt.Status.ToLower())">@evt.Status</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <p>No events found</p>
+            <a href="@Url.Action("CreateEvent", "Admin")" class="btn-create">
+                <i class="fas fa-plus-circle"></i>
+                Create First Event
+            </a>
+        </div>
+    }
+</div>
+
+<div class="content-section">
+    <div class="section-header">
+        <h2 class="section-title">Quick Actions</h2>
+    </div>
+
+    <div class="stats-grid">
+        <a href="@Url.Action("CreateEvent", "Admin")" class="stat-card" style="text-decoration: none;">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-title">Add New Event</div>
+                    <div class="stat-label">Create and publish events</div>
+                </div>
+                <div class="stat-icon blue">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+        </a>
+
+        <a href="@Url.Action("Users", "Admin")" class="stat-card" style="text-decoration: none;">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-title">Manage Users</div>
+                    <div class="stat-label">View and edit members</div>
+                </div>
+                <div class="stat-icon green">
+                    <i class="fas fa-user-cog"></i>
+                </div>
+            </div>
+        </a>
+
+        <a href="@Url.Action("Venues", "Admin")" class="stat-card" style="text-decoration: none;">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-title">Manage Venues</div>
+                    <div class="stat-label">Handle event locations</div>
+                </div>
+                <div class="stat-icon purple">
+                    <i class="fas fa-building"></i>
+                </div>
+            </div>
+        </a>
+
+        <a href="@Url.Action("Reviews", "Admin")" class="stat-card" style="text-decoration: none;">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-title">Review Management</div>
+                    <div class="stat-label">Moderate user feedback</div>
+                </div>
+                <div class="stat-icon orange">
+                    <i class="fas fa-comments"></i>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

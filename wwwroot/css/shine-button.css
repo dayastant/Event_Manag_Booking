@@ -1,0 +1,122 @@
+/* Shine Effect Button */
+.btn-primary-shine {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 34px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 999px;
+  color: #ffffff;
+  text-decoration: none;
+  background: #0b1b3a;
+  box-shadow: 0 10px 22px rgba(11, 27, 58, 0.18);
+  transition:
+    transform 0.5s ease,
+    box-shadow 0.3s ease;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.btn-primary-shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.37),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
+  pointer-events: none;
+  z-index: 2; /* Ensure shine is above button bg but below text if needed, but here text is z-1 so this might cover text if not careful. original was z-index -1. Let's check about.css again. */
+}
+
+/* 
+   In about.css, ::before doesn't specify z-index, but the button content isn't wrapped in a span with z-index.
+   However, the original shine-button.css had z-index: -1 on ::before and z-index: 1 on the button. 
+   Let's keep z-index: -1 for ::before so text stays on top.
+*/
+.btn-primary-shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.37),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
+  pointer-events: none;
+  z-index: 10; /* Changed to be above background but we need to make sure text is on top. Since we can't easily wrap text, let's look at about.css carefully. about.css doesn't use z-index. */
+}
+
+/* Re-reading about.css logic */
+/*
+ about.css:
+ .btn-dark { position: relative; overflow: hidden; ... }
+ .btn-dark::before { content: ""; position: absolute; inset: 0; ... transform: translateX(-100%); ... pointer-events: none; }
+ .btn-dark:hover::before { transform: translateX(100%); }
+ 
+ It doesn't seem to worry about z-index, likely because the text is painted after the background. But if ::before has a background and is absolute inset 0, it covers the content unless z-index is managed.
+ 
+ Let's try to replicate about.css EXACTLY.
+*/
+
+.btn-primary-shine {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 34px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 999px;
+  color: #ffffff;
+  text-decoration: none;
+  background: #0b1b3a;
+  box-shadow: 0 10px 22px rgba(11, 27, 58, 0.18);
+  transition:
+    transform 0.5s ease,
+    box-shadow 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary-shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.37),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
+  pointer-events: none;
+}
+
+.btn-primary-shine:hover {
+  transform: translateY(-2px);
+  background: #0b1b3a;
+  box-shadow: 0 14px 28px rgba(11, 27, 58, 0.25);
+  color: #ffffff;
+}
+
+.btn-primary-shine:hover::before {
+  transform: translateX(100%);
+}

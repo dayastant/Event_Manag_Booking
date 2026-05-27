@@ -1,0 +1,71 @@
+@model IEnumerable<Event_Management_System.Models.Member>
+@{
+    ViewData["Title"] = "Manage Users";
+    Layout = "_AdminLayout";
+}
+
+<div class="content-section">
+    <div class="section-header">
+        <h2 class="section-title">All Users</h2>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th class="text-center">Profile</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th class="text-center">Registered</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center" style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @if (user.ProfilePhoto != null)
+                            {
+                                <img src="@user.ProfilePhotoBase64" alt="@user.FullName" class="table-avatar">
+                            }
+                            else
+                            {
+                                <div class="table-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                    @user.FirstName.Substring(0, 1)@user.LastName.Substring(0, 1)
+                                </div>
+                            }
+                        </td>
+                        <td><strong style="color: #0b1b3a;">@user.FullName</strong></td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td class="text-center">@user.RegistrationDate.ToString("MMM dd, yyyy")</td>
+                        <td class="text-center">
+                            <span class="status-badge @(user.Status.ToLower())">@user.Status</span>
+                        </td>
+                        <td class="text-center">
+                            <div class="table-actions">
+                                <a href="@Url.Action("EditUser", new { id = user.MemberID })" class="btn-edit btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <button type="button" class="btn-danger btn-sm" onclick="showDeleteModal('@Url.Action("DeleteUser", new { id = user.MemberID })')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-users-slash"></i>
+            <p>No users found</p>
+        </div>
+    }
+</div>

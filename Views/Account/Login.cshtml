@@ -1,0 +1,74 @@
+@model Event_Management_System.Models.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login | MCC</title>
+    <link rel="stylesheet" href="~/css/auth.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+    <div class="glass-card">
+        <div class="logo">
+            <img src="~/images/logo.png" alt="Logo">
+            <h2>Welcome back</h2>
+            <p>Please enter your details to login.</p>
+        </div>
+
+        <form asp-action="Login" asp-controller="Account" method="post">
+            @Html.AntiForgeryToken()
+            
+            @if (!string.IsNullOrEmpty(ViewBag.ReturnUrl))
+            {
+                <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+            }
+
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="background: rgba(220,53,69,0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; color: #dc3545; font-size: 0.9rem;"></div>
+
+            <input asp-for="Email" type="email" placeholder="Email address" required>
+            <span asp-validation-for="Email" class="text-danger" style="display: block; margin-top: -10px; margin-bottom: 10px; font-size: 0.85rem; color: #dc3545;"></span>
+
+            <div class="password">
+                <input asp-for="Password" type="password" id="password" placeholder="Password" required>
+                <i class="fa fa-eye" onclick="togglePassword(this)"></i>
+            </div>
+            <span asp-validation-for="Password" class="text-danger" style="display: block; margin-top: 0px; margin-bottom: 15px; font-size: 0.85rem; color: #dc3545;"></span>
+
+            <div class="options">
+                <label class="checkbox-container">
+                    <input asp-for="RememberMe" type="checkbox">
+                    <span class="checkmark"></span>
+                    Remember me
+                </label>
+                <a href="/Account/ForgotPassword">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn-primary">Login</button>
+        </form>
+
+        <div class="divider">OR</div>
+
+        <div class="social">
+            <button type="button" onclick="showComingSoon('Apple')"><i class="fab fa-apple"></i></button>
+            <button type="button" onclick="showComingSoon('Google')"><i class="fab fa-google"></i></button>
+            <button type="button" onclick="showComingSoon('Twitter')"><i class="fab fa-twitter"></i></button>
+        </div>
+
+        <p class="switch">
+            Don't have an account?
+            <a href="@Url.Action("Register", "Account")">Register</a>
+        </p>
+    </div>
+</div>
+
+<script src="~/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+@model Event_Management_System.Models.Booking
+@{
+    ViewData["Title"] = "Booking Confirmed";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Event Management System</title>
+    <link rel="stylesheet" href="~/css/confirmation.css">
+    <link rel="stylesheet" href="~/css/ticket.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/shine-button.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="confirmation-page">
+    <!-- Success Confirmation Popup -->
+    <div class="success-popup-overlay active" id="successPopup">
+        <div class="success-popup">
+            <div class="success-popup-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2>Booking Confirmed!</h2>
+            <p>Your tickets have been successfully booked. Get ready for an amazing experience!</p>
+            <button type="button" class="btn-popup-ok" onclick="closeSuccessPopup()">OK</button>
+        </div>
+    </div>
+    
+    <div class="confirmation-container" id="mainContent" style="display: none;">
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="@Url.Action("Index", "Home")" class="btn-secondary-custom">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <a href="@Url.Action("Index", "Dashboard")" class="btn-primary-custom">
+                <i class="fas fa-th-large"></i> Go to Dashboard
+            </a>
+        </div>
+
+        <!-- Booking Details and Important Info Grid -->
+        <div class="booking-info-grid">
+            <!-- E-Ticket Card with Full Details -->
+            <div class="eticket-wrapper">
+                <div class="eticket-card">
+                    <div class="eticket-header">
+                        <h3><i class="fas fa-ticket-alt icon-space"></i>Your E-Ticket</h3>
+                    </div>
+                    <div class="eticket-body">
+                        <div class="eticket-grid">
+                            <!-- Left Column: Event & Booking Details -->
+                            <div class="event-details">
+                                <h4>@Model.Event?.EventName</h4>
+                                
+                                <div class="details-group">
+                                    <div class="detail-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <strong>Date:</strong> @Model.Event?.EventDate.ToString("MMMM dd, yyyy")
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <strong>Time:</strong> @Model.Event?.StartTime.ToString(@"hh\:mm")
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <strong>Venue:</strong> @Model.Event?.Venue?.VenueName
+                                    </div>
+                                </div>
+
+                                <div class="reference-box">
+                                    <strong>Booking Reference</strong>
+                                    <div class="reference-number">@Model.BookingReferenceNumber</div>
+                                </div>
+
+                                <div class="ticket-details">
+                                    <p class="ticket-details-heading">Ticket Information</p>
+                                    <p class="ticket-info-item"><strong>Seat Type:</strong> @Model.SeatType</p>
+                                    <p class="ticket-info-item"><strong>Quantity:</strong> @Model.Quantity ticket(s)</p>
+                                    <p class="ticket-info-item"><strong>Payment Method:</strong> @Model.PaymentMethod</p>
+                                    
+                                    <div class="total-amount">
+                                        <strong>Total Paid:</strong>
+                                        <span class="amount-value">£@Model.TotalAmount</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column: QR Code -->
+                            <div class="qr-section">
+                                <h5>Scan to Verify</h5>
+                                @if (Model.QRCode != null)
+                                {
+                                    <div class="qr-code-wrapper">
+                                        <img src="data:image/png;base64,@Convert.ToBase64String(Model.QRCode)" 
+                                             alt="QR Code" id="qrCodeImage">
+                                    </div>
+                                    <p class="qr-instruction">
+                                        Present this QR code at the venue entrance for quick check-in
+                                    </p>
+                                    
+                                    <!-- View Ticket Button -->
+                                    <button onclick="openTicketPreview(@Model.BookingID)" class="btn-print-qr">
+                                        <i class="fas fa-eye"></i> View Ticket
+                                    </button>
+                                }
+                                else
+                                {
+                                    <div class="qr-placeholder">
+                                        <i class="fas fa-qrcode"></i>
+                                        <p>QR Code will be generated shortly</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Information Card -->
+            <div class="info-card">
+                <h5><i class="fas fa-info-circle"></i> Important Information</h5>
+                <ul>
+                    <li>Please arrive at least 30 minutes before the event starts</li>
+                    <li>Carry a valid government-issued ID for verification</li>
+                    <li>This e-ticket is valid for @Model.Quantity person(s)</li>
+                    <li>No refunds or cancellations will be provided after booking</li>
+                    <li>Screenshots of the QR code are accepted for entry</li>
+                    <li>Contact support if you need any assistance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ticket Preview Modal -->
+    <div id="ticketPreviewModal" class="ticket-modal">
+        <div class="ticket-modal-overlay" onclick="closeTicketPreview()"></div>
+        <div class="ticket-modal-content">
+            <div class="ticket-modal-header">
+                <h3><i class="fas fa-ticket-alt"></i> Ticket Preview</h3>
+                <button class="modal-close-btn" onclick="closeTicketPreview()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="ticket-modal-body" id="ticketPreviewBody">
+                <div id="printableTicket" style="background: white; padding: 2rem; border-radius: 12px;">
+                    <!-- Clone of ticket content for printing -->
+                </div>
+            </div>
+            <div class="ticket-modal-footer">
+                <button onclick="closeTicketPreview()" class="btn-secondary-custom">
+                    Close
+                </button>
+                <button onclick="downloadTicket(@Model.BookingID)" class="btn-primary-shine">
+                    <i class="fas fa-download"></i> Download Ticket
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function openTicketPreview(bookingId) {
+            const modal = document.getElementById('ticketPreviewModal');
+            const printableContent = document.getElementById('printableTicket');
+            
+            // Show loading state
+            printableContent.innerHTML = '<div style="text-align:center; padding: 2rem;"><i class="fas fa-spinner fa-spin fa-2x"></i></div>';
+            modal.classList.add('active');
+            
+            try {
+                // Fetch the same partial as dashboard
+                const response = await fetch('/Ticket/GetTicketPartial/' + bookingId);
+                if (!response.ok) throw new Error("Failed to load ticket");
+                
+                const html = await response.text();
+                printableContent.innerHTML = html;
+            } catch (error) {
+                console.error(error);
+                printableContent.innerHTML = '<p class="text-danger text-center">Error loading ticket preview.</p>';
+            }
+        }
+        
+        function closeTicketPreview() {
+            const modal = document.getElementById('ticketPreviewModal');
+            modal.classList.remove('active');
+        }
+        
+        
+        async function downloadTicket(bookingId) {
+            const ticketElement = document.getElementById('printableTicket');
+            
+            try {
+                // Use html2canvas to convert ticket to image
+                const canvas = await html2canvas(ticketElement, {
+                    backgroundColor: '#ffffff',
+                    scale: 2, // Higher quality
+                    logging: false
+                });
+                
+                // Convert canvas to blob and download
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = `ticket-${bookingId}.png`;
+                    link.href = url;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                });
+            } catch (error) {
+                console.error('Error generating ticket image:', error);
+                alert('Failed to download ticket. Please try again.');
+            }
+        }
+        
+        function printTicket() {
+            const printContent = document.getElementById('printableTicket');
+            const originalContents = document.body.innerHTML;
+            
+            // Create a temporary print frame or styling
+            // For simplicity, replacing body content (standard print hack)
+            document.body.innerHTML = printContent.innerHTML;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload(); // Reload to restore events
+        }
+        
+        
+        // Close success popup and show main content
+        function closeSuccessPopup() {
+            const popup = document.getElementById('successPopup');
+            const mainContent = document.getElementById('mainContent');
+            
+            popup.classList.remove('active');
+            setTimeout(() => {
+                popup.style.display = 'none';
+                mainContent.style.display = 'flex';
+            }, 300);
+        }
+        
+        // Close popup on outside click
+        document.getElementById('successPopup')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSuccessPopup();
+            }
+        });
+        
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTicketPreview();
+            }
+        });
+    </script>
+</body>
+</html>
+

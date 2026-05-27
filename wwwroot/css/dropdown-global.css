@@ -1,0 +1,129 @@
+/* ==================== GLOBAL DROPDOWN IMPROVEMENTS ==================== */
+/* Apply these styles to all select elements across the application */
+
+/* Target all selects including those with classes */
+select,
+select.form-control,
+select.premium-form-input {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+select:hover,
+select.form-control:hover,
+select.premium-form-input:hover {
+  border-color: #0b1b3a;
+  box-shadow: 0 2px 8px rgba(11, 27, 58, 0.1);
+  transform: translateY(-1px);
+}
+
+select:focus,
+select.form-control:focus,
+select.premium-form-input:focus {
+  outline: none;
+  border-color: #0b1b3a;
+  box-shadow:
+    0 0 0 3px rgba(11, 27, 58, 0.1),
+    0 2px 8px rgba(11, 27, 58, 0.15);
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%230b1b3a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+}
+
+/* Enhanced option styling */
+select option {
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
+  background: #ffffff;
+}
+
+/* Multi-Select Dropdowns */
+select[multiple] {
+  min-height: 180px;
+  padding: 0.5rem;
+  background-image: none;
+}
+
+select[multiple] option {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+select[multiple] option:hover {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  color: #0284c7;
+}
+
+select[multiple] option:checked {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* File Upload Improvements - Global */
+input[type="file"] {
+  cursor: pointer;
+}
+
+/* Custom File Upload Button Wrapper */
+.custom-file-upload {
+  display: inline-block;
+  padding: 12px 24px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border: 2px dashed #9ca3af;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #4b5563;
+  transition: all 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+  border-color: #007bff;
+  color: #007bff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+}
+
+/* ==================== RATING DROPDOWN ENHANCEMENTS ==================== */
+/* Special styling for rating dropdowns to make stars attractive */
+
+/* Rating option enhancement - Make stars golden and prominent */
+#ratingFilter option[value]:not([value=""]) {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  color: #92400e;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #fde68a;
+}
+
+#ratingFilter option[value]:not([value=""]):hover {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #78350f;
+}
+
+#ratingFilter option[value=""]:first-child {
+  color: #9ca3af;
+  font-weight: 500;
+}

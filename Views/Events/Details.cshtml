@@ -1,0 +1,500 @@
+@model Event_Management_System.Models.Event
+@{
+    ViewData["Title"] = Model.EventName;
+    var isLoggedIn = Context.Session.GetInt32("MemberID").HasValue;
+    var memberId = Context.Session.GetInt32("MemberID");
+}
+
+<link rel="stylesheet" href="~/css/event-details.css" />
+
+<!-- Event Details Page -->
+<section class="section section-top">
+    <div class="container">
+        <div class="row">
+            <!-- Left Column: Event Details (60%) -->
+            <div class="col event-details-column">
+                <!-- Event Image -->
+                @if (Model.EventImageBase64 != null)
+                {
+                    <img src="@Model.EventImageBase64" alt="@Model.EventName" class="event-detail-image">
+                }
+                else
+                {
+                    <div class="event-placeholder-detail">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                }
+
+                <!-- Event Title and Category -->
+                <div class="detail-header">
+                    <h1 class="fade-in-up">@Model.EventName</h1>
+                    <div class="badge-group mt-1">
+                        <span class="badge badge-primary">@Model.Category</span>
+                        <span class="status-badge-user @(Model.Status.ToLower())">@Model.Status</span>
+                    </div>
+                </div>
+
+                <!-- Event Info Card -->
+                <!-- <div class="glass-card-enhanced"> -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="event-meta-list">
+                                    <p class="text-secondary">
+                                        <i class="fas fa-calendar icon-primary"></i>
+                                        <strong>Date:</strong> @Model.EventDate.ToString("MMMM dd, yyyy")
+                                    </p>
+                                    <p class="text-secondary">
+                                        <i class="fas fa-clock icon-primary"></i>
+                                        <strong>Time:</strong> @Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")
+                                    </p>
+                                    <p class="text-secondary">
+                                        <i class="fas fa-map-marker-alt icon-primary"></i>
+                                        <strong>Venue:</strong> @(Model.Venue?.VenueName ?? "TBA")
+                                    </p>
+                                    <p class="text-secondary">
+                                        <i class="fas fa-chair icon-primary"></i>
+                                        <strong>Seats:</strong> 
+                                        @if (isLoggedIn)
+                                        {
+                                            <text>@Model.AvailableSeats / @Model.TotalSeats available</text>
+                                        }
+                                        else
+                                        {
+                                            @if (Model.AvailableSeats > 0)
+                                            {
+                                                <span class="seat-badge-detail available">Available</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="seat-badge-detail full">Full</span>
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                <!-- </div> -->
+
+                <!-- Event Description -->
+                <!-- <div class="glass-card-enhanced detail-description-card"> -->
+                    <div class="detail-section-header">
+                        <h3>About This Event</h3>
+                    </div>
+                    <div class="detail-description">
+                        <p class="text-secondary description-text">
+                            @(Model.Description ?? "No description available.")
+                        </p>
+                    </div>
+                <!-- </div> -->
+
+                <!-- Write Review Button (Logged in users only) -->
+                @if (isLoggedIn)
+                {
+                    <div class="review-button-wrapper">
+                        <button type="button" class="btn btn-outline" onclick="openWriteReviewModal()">
+                            <i class="fas fa-star"></i> Write a Review
+                        </button>
+                    </div>
+                }
+            </div>
+
+            <!-- Right Column: Booking Sidebar (40%) -->
+            <div class="col booking-sidebar-column">
+                <div class="glass-sidebar">
+                    <div>
+                        <h3 class="sidebar-title">Book Your Tickets</h3>
+                        
+                        <!-- Pricing -->
+                        <div class="price-section mb-1-5">
+                            <p class="text-muted">Starting from</p>
+                            <h2>
+                                £@Model.Price
+                            </h2>
+                        </div>
+
+                        @{
+                            var availableSeats = Model.AvailableSeats;
+                            var totalSeats = Model.TotalSeats;
+                            var availabilityPercent = totalSeats > 0 ? (double)availableSeats / totalSeats * 100 : 0;
+                            var progressClass = availabilityPercent > 70 ? "progress-bar-high" : 
+                                              availabilityPercent > 30 ? "progress-bar-medium" : 
+                                              "progress-bar-low";
+                            var statusColor = availabilityPercent > 70 ? "#10b981" : 
+                                            availabilityPercent > 30 ? "#3b82f6" : 
+                                            "#f59e0b";
+                        }
+                        
+                        @if (isLoggedIn)
+                        {
+                            <!-- Animated Seat Availability Progress Bar -->
+                            <div class="progress-container mb-1-5">
+                                <div class="progress-header">
+                                    <span class="progress-label">Seat Availability</span>
+                                    <span class="progress-value" style="color: @statusColor;">@availableSeats/@totalSeats</span>
+                                </div>
+                                <div class="progress-bar-wrapper">
+                                    <div class="progress-bar-animated @progressClass" 
+                                         id="seatProgressBar" 
+                                         data-progress="@availabilityPercent.ToString("F2")" 
+                                         style="width: 0%;">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Ticket Types Preview (Members Only) -->
+                        @if (isLoggedIn && Model.Tickets != null && Model.Tickets.Any())
+                        {
+                            <div class="ticket-options mb-1-5">
+                                <h5>Ticket Options</h5>
+                                @foreach (var ticket in Model.Tickets)
+                                {
+                                    var bookedSeats = ticket.TotalQuantity - ticket.AvailableQuantity;
+                                    var bookedPercent = ticket.TotalQuantity > 0 ? (double)bookedSeats / ticket.TotalQuantity * 100 : 0;
+                                    var ticketAvailablePercent = ticket.TotalQuantity > 0 ? (double)ticket.AvailableQuantity / ticket.TotalQuantity * 100 : 0;
+                                    var ticketProgressClass = ticketAvailablePercent > 70 ? "progress-bar-high" : 
+                                                              ticketAvailablePercent > 30 ? "progress-bar-medium" : 
+                                                              "progress-bar-low";
+                                    var ticketStatusColor = ticketAvailablePercent > 70 ? "#10b981" : 
+                                                           ticketAvailablePercent > 30 ? "#3b82f6" : 
+                                                           "#f59e0b";
+                                    
+                                    <div class="ticket-item ticket-item-border">
+                                        <div class="ticket-item-flex" style="margin-bottom: 8px;">
+                                            <div>
+                                                <strong>@ticket.SeatType</strong>
+                                                <p class="text-muted ticket-availability-text" style="margin: 2px 0 0 0;">@ticket.AvailableQuantity / @ticket.TotalQuantity available</p>
+                                            </div>
+                                            <strong class="ticket-price-color">£@ticket.Price</strong>
+                                        </div>
+                                        
+                                        <!-- Ticket Type Progress Bar -->
+                                        <div class="progress-container-ticket">
+                                            <div class="progress-bar-wrapper">
+                                                <div class="progress-bar-animated @ticketProgressClass ticket-progress-@ticket.TicketID" 
+                                                     data-progress="@bookedPercent.ToString("F2")" 
+                                                     style="width: 0%;">
+                                                </div>
+                                            </div>
+                                            <div class="progress-stats">
+                                                <span class="progress-stat-item">
+                                                    <i class="fas fa-check-circle" style="color: @ticketStatusColor;"></i>
+                                                    <span style="color: @ticketStatusColor; font-weight: 600;">@bookedSeats booked</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <!-- Book Button -->
+                        @if (isLoggedIn)
+                        {
+                            @if (Model.AvailableSeats > 0 && Model.EventDate >= DateTime.Today && Model.Status != "Cancelled" && Model.Status != "Completed")
+                            {
+                                <a href="@Url.Action("Create", "Bookings", new { eventId = Model.EventID })" 
+                                   class="btn btn-primary btn-lg btn-block btn-book-now">
+                                    <i class="fas fa-ticket-alt"></i> Book Now
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-lg btn-block btn-disabled" disabled>
+                                    @if(Model.Status == "Cancelled") { <text>Event Cancelled</text> }
+                                    else if(Model.Status == "Completed" || Model.EventDate < DateTime.Today) { <text>Event Ended</text> }
+                                    else { <text>Sold Out</text> }
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Register", "Account")" 
+                               class="btn btn-primary btn-lg btn-block btn-book-now">
+                                <i class="fas fa-user-plus"></i> Register to Book
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h2>Reviews</h2>
+            
+            @if (Model.Reviews != null && Model.Reviews.Any())
+            {
+                <div class="row">
+                    @foreach (var review in Model.Reviews.OrderByDescending(r => r.ReviewDate).Take(5))
+                    {
+                        <div class="col-6 review-card-wrapper">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="review-header">
+                                        <strong>@review.Member?.FullName</strong>
+                                        <small class="text-muted">@review.ReviewDate.ToString("MMM dd, yyyy")</small>
+                                    </div>
+                                    <div class="review-stars">
+                                        @for (int i = 0; i < (review.Rating ?? 0); i++)
+                                        {
+                                            <i class="fas fa-star"></i>
+                                        }
+                                        @for (int i = 0; i < (5 - (review.Rating ?? 0)); i++)
+                                        {
+                                            <i class="far fa-star"></i>
+                                        }
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(review.Title))
+                                    {
+                                        <h5>@review.Title</h5>
+                                    }
+                                    <p class="text-secondary">@(review.Comment ?? "No comment")</p>
+                                    @if (review.IsRecommended)
+                                    {
+                                        <span class="badge badge-success">
+                                            <i class="fas fa-thumbs-up" style="margin-right: 5px;"></i> Recommended
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                @if (Model.Reviews.Count > 5)
+                {
+                    <div class="text-center mt-1">
+                        <button type="button" class="btn btn-outline" onclick="showAllReviews(@Model.EventID, '@Model.EventName')">
+                            View All @Model.Reviews.Count Reviews
+                        </button>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center py-5 empty-state">
+                    <i class="fas fa-comments empty-state-icon"></i>
+                    <p class="text-muted empty-state-text">No reviews yet. Be the first to review this event!</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Write Review Modal -->
+@if (isLoggedIn)
+{
+    <div class="modal-overlay" id="writeReviewModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Write a Review</h2>
+                <button type="button" class="modal-close" onclick="closeWriteReviewModal()">&times;</button>
+            </div>
+            <form asp-controller="Reviews" asp-action="Create" method="post" id="reviewForm">
+                <div class="modal-body">
+                    <input type="hidden" name="EventID" value="@Model.EventID" />
+                    <input type="hidden" name="MemberID" value="@memberId" />
+                    
+                    <div class="form-group">
+                        <label class="form-label">Rating *</label>
+                        <div id="starRating" class="star-rating">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" name="Rating" id="ratingInput" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Review Title</label>
+                        <input type="text" name="Title" class="form-control" placeholder="Brief title for your review">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Your Review *</label>
+                        <textarea name="Comment" class="form-control" rows="5" placeholder="Share your experience..." required></textarea>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input type="checkbox" name="IsRecommended" value="true" class="form-check-input" id="recommendCheck">
+                        <label class="form-check-label" for="recommendCheck">
+                            I would recommend this event
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeWriteReviewModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal text-center success-modal">
+        <div class="success-modal-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h2>Thank You!</h2>
+        <p class="text-secondary">Your review has been successfully submitted.</p>
+        <button type="button" class="btn btn-primary" onclick="closeSuccessModal()">CLOSE</button>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Write Review Modal
+    function openWriteReviewModal() {
+        document.getElementById('writeReviewModal').classList.add('active');
+    }
+    
+    function closeWriteReviewModal() {
+        document.getElementById('writeReviewModal').classList.remove('active');
+    }
+
+    // Success Modal
+    function openSuccessModal() {
+        document.getElementById('successModal').classList.add('active');
+    }
+
+    function closeSuccessModal() {
+        document.getElementById('successModal').classList.remove('active');
+        // Optional: reload page to show new review
+        // window.location.reload(); 
+    }
+    
+    // Star Rating
+    const stars = document.querySelectorAll('#starRating i');
+    const ratingInput = document.getElementById('ratingInput');
+    let selectedRating = 0;
+    
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            selectedRating = parseInt(this.getAttribute('data-rating'));
+            ratingInput.value = selectedRating;
+            updateStars(selectedRating);
+        });
+        
+        star.addEventListener('mouseenter', function() {
+            const rating = parseInt(this.getAttribute('data-rating'));
+            updateStars(rating);
+        });
+    });
+    
+    document.getElementById('starRating').addEventListener('mouseleave', function() {
+        updateStars(selectedRating);
+    });
+    
+    function updateStars(rating) {
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.remove('far');
+                star.classList.add('fas');
+                star.style.color = 'var(--color-warning)';
+            } else {
+                star.classList.remove('fas');
+                star.classList.add('far');
+                star.style.color = 'var(--color-border)';
+            }
+        });
+    }
+    
+    // AJAX Review Submission
+    document.getElementById('reviewForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const form = this;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Convert checkbox to boolean
+        data.IsRecommended = form.querySelector('[name="IsRecommended"]').checked;
+        data.Rating = parseInt(data.Rating);
+        data.EventID = parseInt(data.EventID);
+        data.MemberID = parseInt(data.MemberID);
+
+        // Client-side validation
+        if (!data.Rating) {
+            alert('Please select a star rating.');
+            return;
+        }
+
+        fetch('@Url.Action("Create", "Review")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            // Check if response is okay (status 200-299)
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(result => {
+            if (result.success) {
+                closeWriteReviewModal();
+                form.reset();
+                selectedRating = 0;
+                updateStars(0);
+                openSuccessModal();
+            } else {
+                alert(result.message || 'Failed to submit review.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        });
+    });
+
+    // Close modals on outside click
+    document.getElementById('writeReviewModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeWriteReviewModal();
+        }
+    });
+
+    document.getElementById('successModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeSuccessModal();
+        }
+    });
+    
+    // Show all reviews (placeholder)
+    function showAllReviews(eventId, eventName) {
+         // Implementation similar to Events/Index - could be added if needed
+         alert('Feature coming soon!');
+    }
+    
+    // Animate progress bars on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        // Animate overall seat availability progress bar
+        const progressBar = document.getElementById('seatProgressBar');
+        if (progressBar) {
+            const targetProgress = parseFloat(progressBar.getAttribute('data-progress'));
+            setTimeout(() => {
+                progressBar.style.width = targetProgress + '%';
+            }, 100);
+        }
+        
+        // Animate ticket type progress bars
+        const ticketProgressBars = document.querySelectorAll('[class*="ticket-progress-"]');
+        ticketProgressBars.forEach((bar, index) => {
+            const targetProgress = parseFloat(bar.getAttribute('data-progress'));
+            setTimeout(() => {
+                bar.style.width = targetProgress + '%';
+            }, 150 + (index * 50)); // Stagger animation
+        });
+    });
+</script>
+}

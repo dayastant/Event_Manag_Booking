@@ -1,0 +1,55 @@
+@model Event_Management_System.Models.Venue
+@{
+    ViewData["Title"] = "Edit Venue";
+    Layout = "_AdminLayout";
+}
+
+<div class="content-section">
+    <div class="section-header">
+        <h2 class="section-title">Edit Venue</h2>
+    </div>
+
+    <form asp-action="EditVenue" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="VenueID" />
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="VenueName">Venue Name <span>*</span></label>
+                <input asp-for="VenueName" class="form-control" required />
+                <span asp-validation-for="VenueName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Capacity">Capacity <span>*</span></label>
+                <input asp-for="Capacity" type="number" class="form-control" min="1" required />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Address">Address <span>*</span></label>
+            <input asp-for="Address" class="form-control" required />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="City">City <span>*</span></label>
+            <input asp-for="City" class="form-control" required />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a href="@Url.Action("Venues")" class="btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

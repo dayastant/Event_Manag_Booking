@@ -1,0 +1,321 @@
+@model List<Event_Management_System.Models.Booking>
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "My Bookings";
+}
+
+<link rel="stylesheet" href="~/css/dashboard-premium.css" />
+<link rel="stylesheet" href="~/css/shine-button.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/ticket.css" asp-append-version="true" />
+
+<div>
+    <h1 class="dashboard-page-title">My Bookings</h1>
+    
+    @Html.AntiForgeryToken()
+    
+    <div class="dashboard-premium-card dashboard-animated">
+        <div class="card-header-premium">
+            <h3>Booking History</h3>
+        </div>
+        
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-container">
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Venue</th>
+                            <th>Tickets</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var booking in Model)
+                                {
+                                    <tr data-booking-id="@booking.BookingID">
+                                <td class="booking-reference">@booking.BookingReferenceNumber</td>
+                                <td class="event-name">@booking.Event?.EventName</td>
+                                <td>@booking.Event?.EventDate.ToString("MMM dd, yyyy")</td>
+                                <td>@booking.Event?.Venue?.VenueName</td>
+                                <td class="ticket-quantity">@booking.Quantity</td>
+                                <td class="amount-value">£@booking.TotalAmount</td>
+                                <td>
+                                    @if (booking.BookingStatus == "Confirmed")
+                                    {
+                                        <span class="dashboard-badge badge-confirmed">
+                                            <i class="fas fa-check-circle"></i> Confirmed
+                                        </span>
+                                    }
+                                    else if (booking.BookingStatus == "Cancelled")
+                                    {
+                                        <span class="dashboard-badge badge-cancelled">
+                                            <i class="fas fa-times-circle"></i> Cancelled
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="dashboard-badge badge-pending">
+                                            <i class="fas fa-clock"></i> Pending
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="action-buttons-group">
+                                        @if (booking.BookingStatus == "Confirmed")
+                                        {
+                                            <button onclick="openTicketModal(@booking.BookingID)" class="dashboard-badge dashboard-badge-action badge-action-view">
+                                                <i class="fas fa-ticket-alt"></i> View
+                                            </button>
+                                            
+                                            @if (booking.Event?.EventDate >= DateTime.Today)
+                                            {
+                                                <button onclick="openCancelModal(@booking.BookingID)" class="dashboard-badge dashboard-badge-action badge-action-cancel">
+                                                    <i class="fas fa-ban"></i> Cancel
+                                                </button>
+                                            }
+                                        }
+                                        else if (booking.BookingStatus == "Cancelled")
+                                        {
+                                            <button onclick="deleteBooking(@booking.BookingID)" class="dashboard-badge dashboard-badge-action badge-action-delete">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+            <i class="fas fa-ticket-alt empty-state-icon"></i>
+            <p class="empty-state-text">No bookings found.</p>
+            <a href="@Url.Action("Index", "Events")" class="btn-premium-dashboard">
+                <i class="fas fa-calendar-plus"></i> Browse Events
+            </a>
+        </div>
+        }
+    </div>
+</div>
+
+<!-- Ticket Modal -->
+<div id="ticketModal" class="premium-modal">
+    <!-- Styled to fit the ticket exactly, transparent bg so only ticket shows -->
+    <div class="premium-modal-content modal-ticket-wrapper" style="max-width: 850px; padding: 0; background: transparent; box-shadow: none;">
+        <div id="ticketLoader" style="text-align: center; color: white; padding: 20px;">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+        </div>
+        
+        <div id="ticketContentContainer">
+            <!-- Partial View Loads Here -->
+        </div>
+        
+        <div class="premium-modal-footer" style="padding: 20px; justify-content: center; gap: 15px; margin-top: 10px;">
+            <button onclick="closeTicketModal()" class="btn btn-secondary btn-sm" style="background: rgba(255,255,255,0.9); border: none;">Close</button>
+            <button onclick="downloadTicket()" class="btn-primary-shine" id="downloadBtn">
+                <i class="fas fa-download"></i> Download Ticket
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Confirmation Modal -->
+<!-- Uses Global Popup for deletion, this is kept for legacy/specific cancel logic if needed, but we'll try to use global popup logic below -->
+<div id="cancelModal" class="premium-modal">
+    <div class="premium-modal-content" style="text-align: center; border-radius: 32px;">
+            <div style="margin-bottom: 20px;">
+                <div style="width: 60px; height: 60px; background: rgba(239, 68, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 30px; color: #dc2626;"></i>
+                </div>
+            </div>
+            <h2 style="font-size: 1.5rem; margin-bottom: 10px; color: #0b1b3a;">Cancel Booking?</h2>
+            <p class="text-secondary" style="margin-bottom: 30px; font-size: 0.9rem;">Are you sure you want to cancel this booking? This action cannot be undone.</p>
+            
+        <div style="display: flex; justify-content: center; gap: 15px;">
+                <button onclick="closeCancelModal()" class="btn btn-outline-dark btn-sm" style="min-width: 100px; border-radius: 8px;">No, Keep it</button>
+                <button onclick="confirmCancel()" class="btn btn-primary btn-sm" style="background: #dc2626; border-color: #dc2626; min-width: 100px; border-radius: 8px;">Yes, Cancel</button>
+            </div>
+        </div>
+</div>
+
+@section Scripts {
+        <script>
+        // DELETE BOOKING (For cancelled bookings)
+        async function deleteBooking(bookingId) {
+            const confirmed = await globalPopup.confirm({
+                title: 'Delete History',
+                message: 'Are you sure you want to remove this cancelled booking from your history?',
+                confirmText: 'Delete',
+                cancelText: 'Keep',
+                danger: true
+            });
+
+            if (confirmed) {
+                try {
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+                    
+                    // Create form data with anti-forgery token
+                    const formData = new FormData();
+                    formData.append('__RequestVerificationToken', token);
+                    formData.append('BookingId', parseInt(bookingId));
+
+                    const response = await fetch('@Url.Action("DeleteBooking", "Dashboard")', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        const txt = await response.text();
+                        throw new Error('Network error: ' + response.status + ' - ' + txt);
+                    }
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        const row = document.querySelector(`tr[data-booking-id="${bookingId}"]`);
+                        if (row) row.remove();
+                        await globalPopup.alert({
+                            title: 'Success',
+                            message: 'Booking deleted successfully!',
+                            icon: 'fa-check-circle',
+                            iconType: 'success'
+                        });
+                    } else {
+                        await globalPopup.alert({
+                            title: 'Error',
+                            message: data.message || 'Failed to delete booking.',
+                            icon: 'fa-exclamation-circle',
+                            iconType: 'danger'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Delete error:', error);
+                    await globalPopup.alert({
+                        title: 'Error',
+                        message: 'Error processing request: ' + error.message,
+                        icon: 'fa-exclamation-circle',
+                        iconType: 'danger'
+                    });
+                }
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // TICKET MODAL LOGIC
+        const ticketModal = document.getElementById('ticketModal');
+        const loader = document.getElementById('ticketLoader');
+        const container = document.getElementById('ticketContentContainer');
+
+        async function openTicketModal(id) {
+            ticketModal.classList.add('active');
+            loader.style.display = 'block';
+            container.innerHTML = '';
+            
+            try {
+                const response = await fetch('/Ticket/GetTicketPartial/' + id);
+                const html = await response.text();
+                
+                loader.style.display = 'none';
+                container.innerHTML = html;
+            } catch (error) {
+                console.error(error);
+                alert('Error loading ticket');
+                closeTicketModal();
+            }
+        }
+
+        function closeTicketModal() {
+            ticketModal.classList.remove('active');
+        }
+
+        // DOWNLOAD TICKET
+        function downloadTicket() {
+            const element = document.getElementById('printableTicket'); // Inside partial
+            if (!element) return;
+            
+            const btn = document.getElementById('downloadBtn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            const refId = document.getElementById('ticketReferenceId') ? 
+                          document.getElementById('ticketReferenceId').innerText : 'Ticket';
+
+            html2canvas(element, { 
+                scale: 2,
+                backgroundColor: null, // Transparent bg if element has border radius
+                useCORS: true 
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = refId + '.png';
+                link.href = canvas.toDataURL();
+                link.click();
+                
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }).catch(err => {
+                console.error(err);
+                alert('Error downloading ticket');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        }
+
+        // Window click for closing
+        window.addEventListener('click', function(e) {
+            if (e.target === ticketModal) closeTicketModal();
+            if (e.target === document.getElementById('cancelModal')) closeCancelModal();
+        });
+
+        // CANCEL MODAL (Existing logic)
+        let bookingIdToCancel = null;
+        const cancelModal = document.getElementById('cancelModal');
+
+        function openCancelModal(id) {
+            bookingIdToCancel = id;
+            cancelModal.classList.add('active');
+        }
+
+        function closeCancelModal() {
+            cancelModal.classList.remove('active');
+            bookingIdToCancel = null;
+        }
+
+        async function confirmCancel() {
+            if (!bookingIdToCancel) return;
+            
+            const btn = document.querySelector('#cancelModal .btn-primary');
+            const originalText = btn.innerText;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cancelling...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('@Url.Action("Cancel", "Bookings")?id=' + bookingIdToCancel, {
+                    method: 'POST'
+                });
+                
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    location.reload();
+                }
+            } catch (error) {
+                alert('Error cancelling booking');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                closeCancelModal();
+            }
+        }
+    </script>
+}

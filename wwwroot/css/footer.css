@@ -1,0 +1,133 @@
+/* ======================================
+   FOOTER DESIGN (Colorlib Style)
+====================================== */
+
+.footer {
+    /* background-color: #1a1a1a; */
+    background-color: #0b1b3a;
+    padding: 80px 0 40px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.footer .container {
+    max-width: 1200px;
+    /* margin: 0 auto; */
+    padding: 0 12px;
+}
+
+/* BRAND TITLE */
+.footer-brand {
+    margin-bottom: 50px;
+    display: block;
+}
+
+.footer-brand h2 {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* NAVIGATION LINKS */
+.footer-nav {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-nav a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.footer-nav a:hover {
+    color: #ffffff;
+}
+
+/* SOCIAL ICONS */
+.footer-social {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-circle {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-circle i {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.social-circle:hover {
+    background: #2563EB;
+    transform: translateY(-3px);
+}
+
+.social-circle:hover i {
+    color: #ffffff;
+}
+
+/* COPYRIGHT SECTION */
+.footer-copyright {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 40px;
+}
+
+.footer-copyright p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    line-height: 1.8;
+}
+
+.footer-copyright i {
+    color: #666;
+    margin: 0 3px;
+    font-size: 12px;
+}
+
+.footer-copyright span {
+    color: #999;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer {
+        padding: 80px 0 40px;
+    }
+    
+    .footer-nav {
+        gap: 20px;
+        flex-direction: row;
+        margin-bottom: 40px;
+    }
+    
+    .footer-brand h2 {
+        font-size: 22px;
+    }
+}

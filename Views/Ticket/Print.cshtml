@@ -1,0 +1,261 @@
+@model Event_Management_System.Models.Booking
+@{
+    Layout = null;
+    var evt = Model.Event;
+    var venue = evt?.Venue;
+    var member = Model.Member;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket - @evt?.EventName</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .ticket-container {
+            background: white;
+            width: 800px;
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            position: relative;
+        }
+
+        .ticket-left {
+            flex: 1;
+            padding: 40px;
+            border-right: 2px dashed #e2e8f0;
+            position: relative;
+        }
+
+        .ticket-left::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: #f0f2f5;
+            border-radius: 50%;
+        }
+
+        .ticket-left::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: #f0f2f5;
+            border-radius: 50%;
+        }
+
+        .ticket-right {
+            width: 250px;
+            padding: 40px;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .event-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            color: #1a202c;
+        }
+
+        .event-meta {
+            color: #718096;
+            font-size: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ticket-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .detail-group {
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a0aec0;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 15px;
+        }
+
+        .ticket-id {
+            font-family: monospace;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #d1fae5;
+            color: #059669;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #4F46E5;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        @@media print {
+            body {
+                background: white;
+            }
+            .ticket-container {
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ticket-container">
+        <div class="ticket-left">
+            @if (evt?.EventImageBase64 != null)
+            {
+                <img src="@evt.EventImageBase64" alt="Event" class="event-image">
+            }
+            
+            <h1 class="event-title">@evt?.EventName</h1>
+            
+            <div class="event-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar"></i>
+                    @evt?.EventDate.ToString("MMM dd, yyyy")
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    @evt?.StartTime.ToString(@"hh\:mm")
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    @(venue?.VenueName ?? "TBA")
+                </div>
+            </div>
+
+            <div class="ticket-details">
+                <div class="detail-group">
+                    <div class="detail-label">Issued To</div>
+                    <div class="detail-value">@member?.FirstName @member?.LastName</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Seat Type</div>
+                    <div class="detail-value" style="color: #4F46E5;">@Model.SeatType</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">@Model.Quantity Ticket(s)</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Total Paid</div>
+                    <div class="detail-value">£@Model.TotalAmount</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticket-right">
+            <span class="status-badge">Confirmed</span>
+            
+            @if (ViewBag.QRCodeImage != null)
+            {
+                <img src="data:image/png;base64,@ViewBag.QRCodeImage" alt="QR Code" class="qr-code">
+            }
+            
+            <div class="detail-label">Booking Reference</div>
+            <div class="ticket-id">BK-@Model.BookingID.ToString("D6")</div>
+            
+            <p style="margin-top: 20px; font-size: 12px; color: #a0aec0;">
+                Scan at entry
+            </p>
+        </div>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">
+        <i class="fas fa-print"></i> Print Ticket
+    </button>
+
+</body>
+</html>

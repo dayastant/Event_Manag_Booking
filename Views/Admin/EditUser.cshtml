@@ -1,0 +1,90 @@
+@model Event_Management_System.Models.Member
+@{
+    ViewData["Title"] = "Edit User";
+    Layout = "_AdminLayout";
+}
+
+<div class="content-section">
+    <div class="section-header">
+        <h2 class="section-title">Edit User</h2>
+    </div>
+
+    <form method="post" asp-action="EditUser">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="MemberID" />
+        <input type="hidden" asp-for="RegistrationDate" />
+        <input type="hidden" asp-for="PasswordHash" />
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="FirstName">First Name <span>*</span></label>
+                <input type="text" asp-for="FirstName" class="form-control" required>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="LastName">Last Name <span>*</span></label>
+                <input type="text" asp-for="LastName" class="form-control" required>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="Email">Email <span>*</span></label>
+                <input type="email" asp-for="Email" class="form-control" required>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="PhoneNumber">Phone Number</label>
+                <input type="tel" asp-for="PhoneNumber" class="form-control">
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="PreferredCategory">Preferred Category</label>
+                <select asp-for="PreferredCategory" class="form-control">
+                    <option value="">None</option>
+                    <option value="Concert">Concert</option>
+                    <option value="Play">Play</option>
+                    <option value="Exhibition">Exhibition</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Festival">Festival</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Status">Status <span>*</span></label>
+                <select asp-for="Status" class="form-control" required>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Suspended">Suspended</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Registration Date</label>
+            <input type="text" value="@Model.RegistrationDate.ToString("MMMM dd, yyyy")" class="form-control" disabled>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-save"></i>
+                Update User
+            </button>
+            <a href="@Url.Action("Users")" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Users
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

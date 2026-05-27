@@ -1,0 +1,583 @@
+/* =========================================================
+   BOOKING PAGE — PREMIUM ABOUT STYLE (REFINED)
+========================================================= */
+
+/* --------------------------------
+   SECTION & LAYOUT
+-------------------------------- */
+
+.booking-section {
+  padding: 100px 0 60px;
+  background: #ffffff;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --------------------------------
+   BACK LINK
+-------------------------------- */
+
+.back-btn-container {
+  margin-bottom: 24px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-btn:hover {
+  color: #0b1b3a;
+}
+
+/* --------------------------------
+   PAGE TITLE
+-------------------------------- */
+
+.booking-section h2 {
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 400;
+  color: #6b7280;
+  margin-bottom: 32px;
+  letter-spacing: 0.5px;
+}
+
+/* --------------------------------
+   GRID
+-------------------------------- */
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  margin-left: -16px;
+  margin-right: -16px;
+}
+
+.col {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.booking-main-col {
+  flex: 0 0 60%;
+  max-width: 60%;
+}
+
+.booking-sidebar-col {
+  flex: 0 0 40%;
+  max-width: 40%;
+}
+
+/* --------------------------------
+   EVENT SUMMARY (EDITORIAL)
+-------------------------------- */
+
+.event-summary-card {
+  margin-bottom: 32px;
+}
+
+.event-summary-title {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #4b5563;
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+
+.event-summary-date {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+.event-summary-venue {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+/* --------------------------------
+   FORM LABELS
+-------------------------------- */
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.form-label-bold {
+  color: #374151;
+}
+
+/* --------------------------------
+   SEAT TYPE CARDS (PREMIUM)
+-------------------------------- */
+
+.seat-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.seat-type-card {
+  padding: 20px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(11, 27, 58, 0.08);
+  cursor: pointer;
+  transition: all 0.35s ease;
+}
+
+.seat-type-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(11, 27, 58, 0.12);
+}
+
+.seat-type-card.active,
+.seat-type-card.selected {
+  border-color: #0b1b3a;
+  background: #f8fafc;
+  box-shadow: 0 0 0 2px rgba(11, 27, 58, 0.15);
+}
+
+.seat-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #0b1b3a;
+  letter-spacing: 0.3px;
+}
+
+.seat-card-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0b1b3a;
+  margin-bottom: 4px;
+}
+
+.seat-card-availability {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+/* --------------------------------
+   QUANTITY CONTROL (SOFT)
+-------------------------------- */
+
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.quantity-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #374151;
+}
+
+.quantity-input {
+  width: 60px;
+  text-align: center;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* --------------------------------
+   SPECIAL REQUEST
+-------------------------------- */
+
+.special-request-input {
+  width: 100%;
+  min-height: 80px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  font-size: 0.95rem;
+  resize: vertical;
+  line-height: 1.6;
+  font-family: inherit;
+}
+
+/* --------------------------------
+   FORM UTILITIES
+-------------------------------- */
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #0b1b3a;
+  box-shadow: 0 0 0 3px rgba(11, 27, 58, 0.1);
+}
+
+/* --------------------------------
+   TERMS
+-------------------------------- */
+
+.terms-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #6b7280;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* --------------------------------
+   STICKY SUMMARY (FOCUS POINT)
+-------------------------------- */
+
+.sticky-summary-card {
+  position: sticky;
+  top: 100px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(11, 27, 58, 0.1);
+  box-shadow: 0 22px 48px rgba(11, 27, 58, 0.18);
+}
+
+.summary-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0b1b3a;
+  letter-spacing: 0.3px;
+}
+
+/* --------------------------------
+   SUMMARY CONTENT
+-------------------------------- */
+
+.summary-divider {
+  margin-bottom: 16px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.summary-total-container {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-total-value {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #0b1b3a;
+  letter-spacing: -0.5px;
+}
+
+/* --------------------------------
+   BUTTONS (ABOUT PAGE DNA)
+-------------------------------- */
+
+.btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 14px 34px;
+  transition: all 0.35s ease;
+}
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: #0b1b3a;
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(11, 27, 58, 0.18);
+  border: none;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.37),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
+  pointer-events: none;
+}
+
+.btn-primary:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(11, 27, 58, 0.25);
+  background: #0b1b3a;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
+/* --------------------------------
+   PAYMENT MODAL (ELEVATED)
+-------------------------------- */
+
+.premium-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.premium-modal.active {
+  display: flex;
+}
+
+.text-secondary {
+  color: #6b7280;
+}
+
+.premium-modal-content {
+  background: #ffffff;
+  border-radius: 20px;
+  max-width: 480px; /* Reduced width */
+  width: 90%;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.35);
+}
+
+.premium-modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.premium-modal-footer {
+  padding: 20px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.premium-modal-body {
+  padding: 20px;
+}
+
+/* --------------------------------
+   PAYMENT SELECTION (RESTORED)
+-------------------------------- */
+
+.payment-method-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.payment-method-card {
+  border: 1px solid #e5e7eb; /* Light gray default */
+  border-radius: 12px;
+  padding: 14px 12px; /* Reduced padding further */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #ffffff; /* White bg preference */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px; /* Smaller height */
+}
+
+.payment-method-card:hover {
+  background: #f9fafb;
+  border-color: #9ca3af; /* Darker gray on hover */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.payment-method-card.selected {
+  border: 2px solid #0b1b3a; /* Dark Blue when selected */
+  background: #f8fafc;
+  box-shadow: 0 4px 12px rgba(11, 27, 58, 0.1);
+}
+
+.payment-method-icon {
+  font-size: 1.5rem; /* Smaller icon */
+  color: #4b5563;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.payment-method-card.selected .payment-method-icon {
+  color: #0b1b3a;
+}
+
+.payment-method-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 2px;
+}
+
+.payment-method-desc {
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+.card-payment-form {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  margin-top: 20px;
+}
+
+.card-payment-form .form-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.card-payment-form .form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+.card-payment-form .form-control:focus {
+  outline: none;
+  border-color: #0b1b3a;
+  box-shadow: 0 0 0 3px rgba(11, 27, 58, 0.08);
+}
+
+.card-payment-form .row {
+  display: flex;
+  gap: 12px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.card-payment-form .col-6 {
+  flex: 1;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* --------------------------------
+   RESPONSIVE
+-------------------------------- */
+
+@media (max-width: 1024px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .booking-main-col,
+  .booking-sidebar-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .sticky-summary-card {
+    position: relative;
+    top: auto;
+    margin-top: 64px;
+  }
+}
+
+/* --------------------------------
+   NAVIGATION OVERRIDE
+-------------------------------- */
+.navbar-hidden {
+  display: none !important;
+}
+
+.back-btn-container {
+  margin-bottom: 1.5rem;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: var(--primary-color);
+}

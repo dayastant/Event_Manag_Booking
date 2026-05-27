@@ -1,0 +1,763 @@
+@model List<Event_Management_System.Models.Event>
+@{
+    ViewData["Title"] = "Events";
+    var isLoggedIn = Context.Session.GetInt32("MemberID").HasValue;
+}
+
+<link rel="stylesheet" href="~/css/events.css" />
+
+<!-- Events Page Header -->
+<section class="hero">
+    <div class="container">
+        <h1 class="hero-heading">Discover Events</h1>
+        <p class="hero-subheading">Find and book tickets for amazing events</p>
+    </div>
+</section>
+
+<!-- Search and Filter Section -->
+<section class="section search-section">
+    <div class="container">
+        <div class="glass-card-enhanced search-card">
+            <form id="searchFilterForm" method="get" asp-action="Index">
+                <div class="search-row">
+                    <div class="search-input-group">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" name="search" id="searchInput" class="search-input" 
+                               placeholder="Search events..." 
+                               value="@ViewBag.CurrentSearch">
+                    </div>
+                    
+                    <!-- Rating Filter (All Users) -->
+                    <div class="filter-group">
+                        @{
+                            int? selectedRating = ViewBag.CurrentRating as int?;
+                        }
+                        <select name="rating" id="ratingFilter" class="filter-select">
+                            <option value="">Rating</option>
+                            <option value="4" selected="@(selectedRating == 4)">4★ & Above</option>
+                            <option value="3" selected="@(selectedRating == 3)">3★ & Above</option>
+                            <option value="2" selected="@(selectedRating == 2)">2★ & Above</option>
+                            <option value="1" selected="@(selectedRating == 1)">1★ & Above</option>
+                        </select>
+                    </div>
+
+                    <!-- Availability Filter (All Users) -->
+                    <div class="filter-group">
+                        @{
+                            string? selectedAvailability = ViewBag.Availability as string;
+                        }
+                        <select name="availability" id="availabilityFilter" class="filter-select">
+                            <option value="">Availability</option>
+                            <option value="available" selected="@(selectedAvailability == "available")">Available</option>
+                            <option value="full" selected="@(selectedAvailability == "full")">Full</option>
+                        </select>
+                    </div>
+
+                    <!-- Member-Only Filters -->
+                    @if (isLoggedIn)
+                    {
+                        <!-- Category Filter -->
+                        <div class="filter-group">
+                            <select name="category" id="categoryFilter" class="filter-select">
+                                <option value="">Category</option>
+                                @if (ViewBag.Categories != null)
+                                {
+                                    var categories = ViewBag.Categories as System.Collections.Generic.List<string>;
+                                    if (categories != null)
+                                    {
+                                        foreach (var cat in categories)
+                                        {
+                                            bool isSelected = (ViewBag.CurrentCategory as string) == cat;
+                                            <option value="@cat" selected="@isSelected">@cat</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div class="filter-group">
+                            <select name="status" id="statusFilter" class="filter-select">
+                                <option value="">Status</option>
+                                @if (ViewBag.Statuses != null)
+                                {
+                                    var statuses = ViewBag.Statuses as System.Collections.Generic.List<string>;
+                                    if (statuses != null)
+                                    {
+                                        foreach (var stat in statuses)
+                                        {
+                                            bool isSelected = (ViewBag.CurrentStatus as string) == stat;
+                                            <option value="@stat" selected="@isSelected">@stat</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+
+                        <!-- Price Icon Badge -->
+                        <div class="filter-icon-badge-wrapper">
+                            <button type="button" class="filter-icon-badge" id="priceIconBtn" onclick="togglePriceDropdown()">
+                                <i class="fas fa-dollar-sign"></i>
+                            </button>
+                            <div class="filter-popup-card" id="priceDropdown" style="display: none;">
+                                <h4>PRICE RANGE</h4>
+                                <div class="price-display-row">
+                                    <div class="price-display-box">
+                                        <label>Min</label>
+                                        <input type="text" id="minPriceDisplay" class="price-display" value="£34" readonly>
+                                    </div>
+                                    <span class="price-separator">—</span>
+                                    <div class="price-display-box">
+                                        <label>Max</label>
+                                        <input type="text" id="maxPriceDisplay" class="price-display" value="£805" readonly>
+                                    </div>
+                                </div>
+                                <div class="dual-range-slider-container">
+                                    <div class="slider-track"></div>
+                                    <div class="slider-range" id="sliderRange"></div>
+                                    <input type="range" id="minPriceSlider" min="0" max="1000" value="34" class="slider-input">
+                                    <input type="range" id="maxPriceSlider" min="0" max="1000" value="805" class="slider-input">
+                                </div>
+                                <input type="hidden" id="minPriceInput" name="minPrice" value="@ViewBag.MinPrice">
+                                <input type="hidden" id="maxPriceInput" name="maxPrice" value="@ViewBag.MaxPrice">
+                                <button type="button" class="popup-apply-btn" onclick="applyPriceFilter()">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Date Icon Badge -->
+                        <div class="filter-icon-badge-wrapper">
+                            <button type="button" class="filter-icon-badge" id="dateIconBtn" onclick="toggleDateDropdown()">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                            <div class="filter-popup-card" id="dateDropdown" style="display: none;">
+                                <div class="calendar-header">
+                                    <button type="button" class="calendar-nav-btn" onclick="prevMonth()">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <h4 id="calendarMonthYear">August 2024</h4>
+                                    <button type="button" class="calendar-nav-btn" onclick="nextMonth()">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="calendar-grid" id="calendarGrid">
+                                    <div class="weekday-label">Mo</div>
+                                    <div class="weekday-label">Tu</div>
+                                    <div class="weekday-label">We</div>
+                                    <div class="weekday-label">Th</div>
+                                    <div class="weekday-label">Fr</div>
+                                    <div class="weekday-label weekend">Sa</div>
+                                    <div class="weekday-label weekend">Su</div>
+                                    <!-- Days will be generated by JavaScript -->
+                                </div>
+                                <input type="hidden" id="startDateInput" name="startDate" value="@ViewBag.StartDate">
+                                <input type="hidden" id="endDateInput" name="endDate" value="@ViewBag.EndDate">
+                                <button type="button" class="popup-apply-btn" onclick="applyDateFilter()">Apply</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Active Filter Chips -->
+                <div id="activeFilters" class="active-filters">
+                    @{
+                        string? currentSearch = ViewBag.CurrentSearch as string;
+                        string? currentCategory = ViewBag.CurrentCategory as string;
+                        string? currentStatus = ViewBag.CurrentStatus as string;
+                        int? currentRating = ViewBag.CurrentRating as int?;
+                    }
+
+                    @if (!string.IsNullOrEmpty(currentSearch))
+                    {
+                        <div class="filter-chip">
+                            <span>Search: "@currentSearch"</span>
+                            <button type="button" onclick="clearFilter('search')"><i class="fas fa-times"></i></button>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(currentCategory))
+                    {
+                        <div class="filter-chip">
+                            <span>Category: @currentCategory</span>
+                            <button type="button" onclick="clearFilter('category')"><i class="fas fa-times"></i></button>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(currentStatus))
+                    {
+                        <div class="active-status-chip @(currentStatus.ToLower())">
+                            <span>@currentStatus</span>
+                            <button type="button" onclick="clearFilter('status')"><i class="fas fa-times"></i></button>
+                        </div>
+                    }
+                    @if (currentRating.HasValue && currentRating.Value > 0)
+                    {
+                        <div class="filter-chip rating-chip">
+                            <span>@currentRating★ & Above</span>
+                            <button type="button" onclick="clearFilter('rating')"><i class="fas fa-times"></i></button>
+                        </div>
+                    }
+                    @{
+                        string? currentAvailability = ViewBag.Availability as string;
+                        decimal? minPrice = ViewBag.MinPrice as decimal?;
+                        decimal? maxPrice = ViewBag.MaxPrice as decimal?;  
+                         DateTime? startDate = ViewBag.StartDate as DateTime?;
+                        DateTime? endDate = ViewBag.EndDate as DateTime?;
+                    }
+
+                    @if (!string.IsNullOrEmpty(currentAvailability))
+                    {
+                        <div class="filter-chip">
+                            <span>@currentAvailability</span>
+                            <button type="button" onclick="clearFilter('availability')"><i class="fas fa-times"></i></button>
+                        </div>
+                    }
+                    @if (minPrice.HasValue || maxPrice.HasValue)
+                    {
+                        <div class="filter-chip">
+                            <span>Price: £@(minPrice ?? 0) - £@(maxPrice ?? 999)</span>
+                            <button type="button" onclick="clearFilter('price')"><i class="fas fa-times"></i></button>
+                        </div>
+                    }
+                    @if (startDate.HasValue || endDate.HasValue)
+                    {
+                        <div class="filter-chip">
+                            <span>Date: @(startDate?.ToString("MM/dd") ?? "Any") - @(endDate?.ToString("MM/dd") ?? "Any")</span>
+                            <button type="button" onclick="clearFilter('date')"><i class="fas fa-times"></i></button>
+                        </div>
+                    }
+                    
+                    @if (!string.IsNullOrEmpty(currentSearch) || !string.IsNullOrEmpty(currentCategory) || !string.IsNullOrEmpty(currentStatus) || (currentRating.HasValue && currentRating.Value > 0) || !string.IsNullOrEmpty(currentAvailability) || minPrice.HasValue || maxPrice.HasValue || startDate.HasValue || endDate.HasValue)
+                    {
+                        <a href="@Url.Action("Index", "Events")" class="clear-all-btn">Clear All</a>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div id="eventsGrid" class="events-grid-wrapper">
+        <div class="container">
+            @if (Model != null && Model.Any())
+            {
+                <div class="events-row">
+                    @foreach (var evt in Model)
+                    {
+                        <div class="event-col">
+                            <div class="glass-card-enhanced event-card-hover">
+                                <a href="@Url.Action("Details", "Events", new { id = evt.EventID })" class="event-image-wrapper">
+                                    @if (evt.EventImageBase64 != null)
+                                    {
+                                        <img src="@evt.EventImageBase64" alt="@evt.EventName" class="event-card-image">
+                                    }
+                                    else
+                                    {
+                                        <div class="event-placeholder">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                    }
+                                    
+                                    <!-- Category Overlay -->
+                                    <span class="badge badge-primary badge-overlay-left">@evt.Category</span>
+                                    
+                                    <!-- Status Overlay -->
+                                    <div class="badge-overlay-right">
+                                        <span class="status-badge-user @evt.Status.ToLower()">@evt.Status</span>
+                                    </div>
+                                    @if (evt.AvailableSeats == 0)
+                                    {
+                                        <span class="badge-overlay-right full-badge">FULL</span>
+                                    }
+                                </a>
+                                
+                                <div class="card-body">
+                                    <h3 class="card-title">
+                                        <a href="@Url.Action("Details", "Events", new { id = evt.EventID })">@evt.EventName</a>
+                                    </h3>
+                                    
+                                    <div class="card-text">
+                                        <div class="event-info-item">
+                                            <i class="fas fa-calendar"></i>
+                                            @if (evt.EventDate.Date == evt.EndDate.Date)
+                                            {
+                                                <span class="event-info-bold">@evt.EventDate.ToString("MMMM dd, yyyy")</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="event-info-bold">@evt.EventDate.ToString("MMM dd") <text>-</text> @evt.EndDate.ToString("MMM dd, yyyy")</span>
+                                            }
+                                        </div>
+                                        <div class="event-info-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>@DateTime.Today.Add(evt.StartTime).ToString("hh:mm tt") - @DateTime.Today.Add(evt.EndTime).ToString("hh:mm tt")</span>
+                                        </div>
+                                        <div class="event-info-item">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>@(evt.Venue?.VenueName ?? "TBA")</span>
+                                        </div>
+                                        <div class="event-info-item">
+                                            <i class="fas fa-chair"></i>
+                                            @if (isLoggedIn)
+                                            {
+                                                <span>@evt.AvailableSeats seats left</span>
+                                            }
+                                            else
+                                            {
+                                                @if (evt.AvailableSeats > 0)
+                                                {
+                                                    <span>Available</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Full</span>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-divider"></div>
+                                    
+                                    <div class="card-footer">
+                                        <div class="price-section">
+                                            <span class="price-label">Price</span>
+                                            <strong class="price-value">£@evt.Price</strong>
+                                        </div>
+                                        <button type="button" class="btn btn-outline" onclick="showReviews(@evt.EventID, '@evt.EventName')">
+                                            <i class="fas fa-star"></i> Reviews
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-search"></i>
+                    <p>No events found matching your criteria.</p>
+                    <a href="@Url.Action("Index", "Events")" class="btn btn-primary mt-3">Reset Filters</a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Modal -->
+<div class="modal-overlay" id="reviewsModal">
+    <div class="modal modal-lg">
+        <div class="modal-header">
+            <h2 class="modal-title" id="reviewsModalTitle">Event Reviews</h2>
+            <button type="button" class="modal-close" onclick="closeReviewsModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="reviewsModalBody">
+            <div class="text-center py-5">
+                <div class="spinner"></div>
+                <p class="text-muted loading-text">Loading reviews...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+<script>
+    // Real-time search and filter
+    const searchInput = document.getElementById('searchInput');
+    const ratingFilter = document.getElementById('ratingFilter');
+    const availabilityFilter = document.getElementById('availabilityFilter');
+    const form = document.getElementById('searchFilterForm');
+    
+    // Get member-only filters if they exist
+    const categoryFilter = document.getElementById('categoryFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    
+    // Auto-submit on select change
+    if (categoryFilter) categoryFilter.addEventListener('change', () => form.submit());
+    if (statusFilter) statusFilter.addEventListener('change', () => form.submit());
+    ratingFilter.addEventListener('change', () => form.submit());
+    availabilityFilter.addEventListener('change', () => form.submit());
+    
+    // Real-time client-side search (no page reload)
+    let searchTimeout;
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterEventsClientSide();
+        }, 300); // Filter after 300ms of user stopping typing
+    });
+    
+    // Client-side filter function
+    function filterEventsClientSide() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const eventCards = document.querySelectorAll('.event-card');
+        
+        eventCards.forEach(card => {
+            const eventName = card.querySelector('.event-card-title')?.textContent.toLowerCase() || '';
+            const eventCategory = card.querySelector('.event-category')?.textContent.toLowerCase() || '';
+            const eventVenue = card.querySelector('.event-venue')?.textContent.toLowerCase() || '';
+            
+            // Show if matches search term, hide if not
+            if (searchTerm === '' || 
+                eventName.includes(searchTerm) || 
+                eventCategory.includes(searchTerm) || 
+                eventVenue.includes(searchTerm)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    
+    // Clear individual filter
+    function clearFilter(filterType) {
+        switch(filterType) {
+            case 'search':
+                searchInput.value = '';
+                break;
+            case 'category':
+                if (categoryFilter) categoryFilter.value = '';
+                break;
+            case 'status':
+                if (statusFilter) statusFilter.value = '';
+                break;
+            case 'rating':
+                ratingFilter.value = '';
+                break;
+            case 'availability':
+                availabilityFilter.value = '';
+                break;
+            case 'price':
+                const minPriceInput = document.getElementById('minPriceInput');
+                const maxPriceInput = document.getElementById('maxPriceInput');
+                if (minPriceInput) minPriceInput.value = '';
+                if (maxPriceInput) maxPriceInput.value = '';
+                break;
+            case 'date':
+                const startDateInput = document.getElementById('startDateInput');
+                const endDateInput = document.getElementById('endDateInput');
+                if (startDateInput) startDateInput.value = '';
+                if (endDateInput) endDateInput.value = '';
+                break;
+        }
+        form.submit();
+    }
+    
+    // Show reviews modal
+    function showReviews(eventId, eventName) {
+        const modal = document.getElementById('reviewsModal');
+        const modalTitle = document.getElementById('reviewsModalTitle');
+        const modalBody = document.getElementById('reviewsModalBody');
+        
+        modalTitle.textContent = eventName + ' - Reviews';
+        modalBody.innerHTML = '<div class="text-center py-5"><div class="spinner"></div><p class="text-muted" style="margin-top: 1rem;">Loading reviews...</p></div>';
+        
+        modal.classList.add('active');
+        
+        // Fetch reviews via AJAX
+        fetch(`/Review/GetReviews?eventId=${eventId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success || data.reviews.length === 0) {
+                    modalBody.innerHTML = '<div class="text-center py-5"><i class="fas fa-comments" style="font-size: 3rem; color: var(--color-text-muted);"></i><p class="text-muted" style="margin-top: 1rem;">No reviews yet. Be the first to review this event!</p></div>';
+                } else {
+                    let html = '';
+                    data.reviews.forEach(review => {
+                        const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                        html += `
+                            <div class="card" style="margin-bottom: 1rem;">
+                                <div class="card-body">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                                        <div>
+                                            <strong>${review.memberName}</strong>
+                                            <div style="color: var(--color-warning); font-size: 1.2rem;">${stars}</div>
+                                        </div>
+                                        <small class="text-muted">${new Date(review.reviewDate).toLocaleDateString()}</small>
+                                    </div>
+                                    ${review.title ? `<h4 style="margin: 0.5rem 0;">${review.title}</h4>` : ''}
+                                    <p class="text-secondary">${review.comment || 'No comment provided.'}</p>
+                                    ${review.isRecommended ? '<span class="badge badge-success"><i class="fas fa-thumbs-up"></i> Recommended</span>' : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    modalBody.innerHTML = html;
+                }
+            })
+            .catch(error => {
+                modalBody.innerHTML = '<div class="alert alert-danger">Error loading reviews. Please try again.</div>';
+            });
+    }
+    
+    function closeReviewsModal() {
+        document.getElementById('reviewsModal').classList.remove('active');
+    }
+    
+    // Close modal when clicking outside
+    document.getElementById('reviewsModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeReviewsModal();
+        }
+    });
+    
+    
+    // Toggle Price Dropdown with Icon Badge
+    function togglePriceDropdown() {
+        const dropdown = document.getElementById('priceDropdown');
+        const dateDropdown = document.getElementById('dateDropdown');
+        const iconBtn = document.getElementById('priceIconBtn');
+        const dateIconBtn = document.getElementById('dateIconBtn');
+        
+        // Close date dropdown
+        if (dateDropdown) {
+            dateDropdown.style.display = 'none';
+            dateIconBtn?.classList.remove('active');
+        }
+        
+        // Toggle price dropdown
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+            dropdown.style.display = 'block';
+            iconBtn.classList.add('active');
+            initPriceSlider(); // Initialize slider when opening
+        } else {
+            dropdown.style.display = 'none';
+            iconBtn.classList.remove('active');
+        }
+    }
+    
+    // Toggle Date Dropdown with Icon Badge
+    function toggleDateDropdown() {
+        const dropdown = document.getElementById('dateDropdown');
+        const priceDropdown = document.getElementById('priceDropdown');
+        const iconBtn = document.getElementById('dateIconBtn');
+        const priceIconBtn = document.getElementById('priceIconBtn');
+        
+        // Close price dropdown
+        if (priceDropdown) {
+            priceDropdown.style.display = 'none';
+            priceIconBtn?.classList.remove('active');
+        }
+        
+        // Toggle date dropdown
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+            dropdown.style.display = 'block';
+            iconBtn.classList.add('active');
+            renderCalendar(); // Render calendar when opening
+        } else {
+            dropdown.style.display = 'none';
+            iconBtn.classList.remove('active');
+        }
+    }
+    
+    // Price Slider Logic
+    let priceSliderInitialized = false;
+    function initPriceSlider() {
+        if (priceSliderInitialized) return;
+        priceSliderInitialized = true;
+        
+        const minSlider = document.getElementById('minPriceSlider');
+        const maxSlider = document.getElementById('maxPriceSlider');
+        const minDisplay = document.getElementById('minPriceDisplay');
+        const maxDisplay = document.getElementById('maxPriceDisplay');
+        const sliderRange = document.getElementById('sliderRange');
+        
+        function updateSlider() {
+            let minVal = parseInt(minSlider.value);
+            let maxVal = parseInt(maxSlider.value);
+            
+            // Prevent crossing
+            if (maxVal - minVal < 10) {
+                if (event.target === minSlider) {
+                    minSlider.value = maxVal - 10;
+                    minVal = maxVal - 10;
+                } else {
+                    maxSlider.value = minVal + 10;
+                    maxVal = minVal + 10;
+                }
+            }
+            
+            // Update display
+            minDisplay.value = '£' + minVal;
+            maxDisplay.value = '£' + maxVal;
+            
+            // Update slider range visual
+            const minPercent = (minVal / 1000) * 100;
+            const maxPercent = (maxVal / 1000) * 100;
+            sliderRange.style.left = minPercent + '%';
+            sliderRange.style.width = (maxPercent - minPercent) + '%';
+        }
+        
+        minSlider.addEventListener('input', updateSlider);
+        maxSlider.addEventListener('input', updateSlider);
+        updateSlider(); // Initial update
+    }
+    
+    // Apply Price Filter
+    function applyPriceFilter() {
+        const minVal = document.getElementById('minPriceSlider').value;
+        const maxVal = document.getElementById('maxPriceSlider').value;
+        
+        document.getElementById('minPriceInput').value = minVal;
+        document.getElementById('maxPriceInput').value = maxVal;
+        
+        togglePriceDropdown(); // Close dropdown
+        form.submit();
+    }
+    
+    // Calendar Variables
+    let currentYear = new Date().getFullYear();
+    let currentMonth = new Date().getMonth();
+    let selectedStartDate = null;
+    let selectedEndDate = null;
+    
+    // Render Calendar
+    function renderCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        const monthYearEl = document.getElementById('calendarMonthYear');
+        
+        const firstDay = new Date(currentYear, currentMonth, 1);
+        const lastDay = new Date(currentYear, currentMonth + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDayOfWeek = (firstDay.getDay() + 6) % 7; // Monday = 0
+        
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+        monthYearEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        
+        // Clear existing days (keep weekday labels)
+        const existingDays = grid.querySelectorAll('.calendar-day');
+        existingDays.forEach(day => day.remove());
+        
+        // Add empty cells for days before month starts
+        for (let i = 0; i < startingDayOfWeek; i++) {
+            const emptyDay = document.createElement('div');
+            emptyDay.className = 'calendar-day other-month';
+            grid.appendChild(emptyDay);
+        }
+        
+        // Add days of the month
+        const today = new Date();
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day';
+            dayEl.textContent = day;
+            
+            const date = new Date(currentYear, currentMonth, day);
+            const dayOfWeek = date.getDay();
+            
+            // Check if weekend
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                dayEl.classList.add('weekend-date');
+            }
+            
+            // Check if today
+            if (date.toDateString() === today.toDateString()) {
+                dayEl.classList.add('today');
+            }
+            
+            // Add click handler
+            dayEl.addEventListener('click', () => selectDate(date, dayEl));
+            
+            grid.appendChild(dayEl);
+        }
+    }
+    
+    // Select Date
+    function selectDate(date, dayEl) {
+        if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
+            // Start new selection
+            selectedStartDate = date;
+            selectedEndDate = null;
+            document.querySelectorAll('.calendar-day').forEach(d => {
+                d.classList.remove('selected', 'in-range');
+            });
+            dayEl.classList.add('selected');
+        } else {
+            // Complete range selection
+            if (date < selectedStartDate) {
+                selectedEndDate = selectedStartDate;
+                selectedStartDate = date;
+            } else {
+                selectedEndDate = date;
+            }
+            highlightDateRange();
+        }
+    }
+    
+    // Highlight Date Range
+    function highlightDateRange() {
+        const days = document.querySelectorAll('.calendar-day');
+        days.forEach(dayEl => {
+            dayEl.classList.remove('selected', 'in-range');
+            const dayNum = parseInt(dayEl.textContent);
+            if (!isNaN(dayNum)) {
+                const date = new Date(currentYear, currentMonth, dayNum);
+                if (date >= selectedStartDate && date <= selectedEndDate) {
+                    if (date.getTime() === selectedStartDate.getTime() || 
+                        date.getTime() === selectedEndDate.getTime()) {
+                        dayEl.classList.add('selected');
+                    } else {
+                        dayEl.classList.add('in-range');
+                    }
+                }
+            }
+        });
+    }
+    
+    // Previous Month
+    function prevMonth() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    }
+    
+    // Next Month
+    function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar();
+    }
+    
+    // Apply Date Filter
+    function applyDateFilter() {
+        if (selectedStartDate) {
+            const startStr = selectedStartDate.toISOString().split('T')[0];
+            document.getElementById('startDateInput').value = startStr;
+        }
+        if (selectedEndDate) {
+            const endStr = selectedEndDate.toISOString().split('T')[0];
+            document.getElementById('endDateInput').value = endStr;
+        }
+        
+        toggleDateDropdown(); // Close dropdown
+        form.submit();
+    }
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        const priceWrapper = document.querySelector('.filter-icon-badge-wrapper:has(#priceDropdown)');
+        const dateWrapper = document.querySelector('.filter-icon-badge-wrapper:has(#dateDropdown)');
+        const priceDropdown = document.getElementById('priceDropdown');
+        const dateDropdown = document.getElementById('dateDropdown');
+        const priceIconBtn = document.getElementById('priceIconBtn');
+        const dateIconBtn = document.getElementById('dateIconBtn');
+        
+        if (priceDropdown && !priceWrapper?.contains(e.target)) {
+            priceDropdown.style.display = 'none';
+            priceIconBtn?.classList.remove('active');
+        }
+        
+        if (dateDropdown && !dateWrapper?.contains(e.target)) {
+            dateDropdown.style.display = 'none';
+            dateIconBtn?.classList.remove('active');
+        }
+    });
+
+</script>
+}

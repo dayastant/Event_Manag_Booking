@@ -1,0 +1,261 @@
+/* =============================================
+   GLOBAL POPUP MODAL SYSTEM - PREMIUM EDIT
+   Style: Clean, Centered, White Card, Red Highlights
+============================================= */
+
+:root {
+  --popup-overlay-bg: rgba(0, 0, 0, 0.6);
+  --popup-bg: #ffffff;
+  --popup-radius: 24px;
+  --popup-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Overlay */
+.global-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--popup-overlay-bg);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.global-popup-overlay.active {
+  display: flex;
+}
+
+/* Popup Container */
+.global-popup {
+  background: var(--popup-bg);
+  border-radius: var(--popup-radius);
+  box-shadow: var(--popup-shadow);
+  width: 90%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.9);
+  opacity: 0;
+  animation: popupIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  padding: 40px 30px;
+  text-align: center;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+/* Header (Icon + Title) */
+.popup-header {
+  margin-bottom: 12px;
+  padding: 0;
+  border: none;
+  display: block;
+}
+
+.popup-header h3 {
+  margin: 15px 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0b1b3a;
+  letter-spacing: -0.02em;
+}
+
+/* Close Button (Hidden by default for this style, uses buttons) */
+.popup-close {
+  display: none;
+}
+
+/* Body (Message) */
+.popup-body {
+  padding: 0;
+  margin-bottom: 30px;
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Footer (Actions) */
+.popup-footer {
+  padding: 0;
+  border: none;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Icon Styling */
+.popup-confirmation-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background: #fee2e2; /* Default Danger Light */
+  color: #dc2626; /* Default Danger Dark */
+}
+
+.popup-confirmation-icon.danger {
+  background: #fee2e2;
+  color: #eff6ff; /* Using image style: Red BG with White Icon? Or Light BG with Red Icon? Image has Light RED BG and RED Icon. */
+  color: #dc2626;
+}
+
+/* If icon needs to match image exactly (Red Circle with White Exclamation? No, image is Light Red Circle with Red Triangle/Exclamation) */
+/* Actually image is: Light Red Circle Background, Dark Red Triangle Icon? No looks like Standard SweetAlert Error style. */
+/* Let's stick to Light BG, Dark Icon as it's cleaner. */
+.popup-confirmation-icon.danger {
+  background: #fef2f2;
+  color: #ef4444;
+}
+.popup-confirmation-icon.success {
+  background: #ecfdf5;
+  color: #10b981;
+}
+.popup-confirmation-icon.warning {
+  background: #fffbeb;
+  color: #f59e0b;
+}
+
+/* Buttons */
+.popup-btn {
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+  border: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 0.3px;
+}
+
+/* Primary Button - Dark Blue/Navy (for CLOSE, OK, etc.) */
+.popup-btn-primary {
+  background: #0b1b3a;
+  color: white;
+  box-shadow: 0 4px 12px rgba(11, 27, 58, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shine effect for primary buttons */
+.popup-btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.37),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
+  pointer-events: none;
+}
+
+.popup-btn-primary:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(11, 27, 58, 0.3);
+}
+
+.popup-btn-primary:hover::before {
+  transform: translateX(100%);
+}
+
+/* Danger Button - Bright Red (for Yes, Cancel / Delete / Confirm Delete, etc.) */
+.popup-btn-danger {
+  background: #dc2626;
+  color: white;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shine effect for danger buttons */
+.popup-btn-danger::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.37),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
+  pointer-events: none;
+}
+
+.popup-btn-danger:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+}
+
+.popup-btn-danger:hover::before {
+  transform: translateX(100%);
+}
+
+/* Secondary Button - White/Outline (for No, Keep it / Cancel, etc.) */
+.popup-btn-secondary {
+  background: #ffffff;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.popup-btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popupIn {
+  to {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .popup-footer {
+    flex-direction: column-reverse; /* Stack buttons on mobile */
+  }
+  .popup-btn {
+    width: 100%;
+  }
+}

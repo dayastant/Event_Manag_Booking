@@ -1,0 +1,79 @@
+@model IEnumerable<Event_Management_System.Models.Review>
+@{
+    ViewData["Title"] = "Manage Reviews";
+    Layout = "_AdminLayout";
+}
+
+<div class="content-section">
+    <div class="section-header">
+        <h2 class="section-title">All Reviews</h2>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>User</th>
+                    <th class="text-center">Rating</th>
+                    <th>Comment</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center" style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var review in Model)
+                {
+                    <tr>
+                        <td><strong style="color: #0b1b3a;">@review.Event?.EventName</strong></td>
+                        <td>@review.Member?.FullName</td>
+                        <td class="text-center">
+                            <div style="color: #f59e0b;">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= review.Rating)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star"></i>
+                                    }
+                                }
+                            </div>
+                        </td>
+                        <td style="max-width: 300px;">
+                            @if (!string.IsNullOrEmpty(review.Comment))
+                            {
+                                <text>@(review.Comment.Length > 100 ? review.Comment.Substring(0, 100) + "..." : review.Comment)</text>
+                            }
+                            else
+                            {
+                                <em style="color: #9ca3af;">No comment</em>
+                            }
+                        </td>
+                        <td class="text-center">@review.ReviewDate.ToString("MMM dd, yyyy")</td>
+                        <td class="text-center">
+                            <div class="table-actions">
+                                <a href="@Url.Action("EditReview", new { id = review.ReviewID })" class="btn-edit btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <button type="button" class="btn-danger btn-sm" onclick="showDeleteModal('@Url.Action("DeleteReview", new { id = review.ReviewID })')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-comments-slash"></i>
+            <p>No reviews found</p>
+        </div>
+    }
+</div>

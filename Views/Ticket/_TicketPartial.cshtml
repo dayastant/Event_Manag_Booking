@@ -1,0 +1,84 @@
+@model Event_Management_System.Models.Booking
+@{
+    var evt = Model.Event;
+    var venue = evt?.Venue;
+    var member = Model.Member;
+}
+
+
+
+<div class="ticket-container" id="printableTicket">
+    <div class="ticket-left">
+        <div class="ticket-event-image-container">
+            @if (evt?.EventImageBase64 != null)
+            {
+                <img src="@evt.EventImageBase64" alt="Event" class="ticket-event-image" style="display: block;">
+            }
+            else
+            {
+                <div class="ticket-event-image" style="display: flex; align-items: center; justify-content: center;">
+                    No Image
+                </div>
+            }
+        </div>
+        
+        <div class="ticket-content">
+            <h1 class="ticket-event-title">@evt?.EventName</h1>
+            
+            <div class="ticket-event-meta">
+                <div class="ticket-meta-item">
+                    <i class="fas fa-calendar"></i>
+                    @evt?.EventDate.ToString("MMM dd, yyyy")
+                </div>
+                <div class="ticket-meta-item">
+                    <i class="fas fa-clock"></i>
+                    @evt?.StartTime.ToString(@"hh\:mm")
+                </div>
+                <div class="ticket-meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    @(venue?.VenueName ?? "TBA")
+                </div>
+            </div>
+
+            <div class="ticket-info-row">
+                <div class="ticket-info-label">Issued To</div>
+                <div class="ticket-info-value">@member?.FirstName @member?.LastName</div>
+            </div>
+
+            <div class="ticket-info-row">
+                <div class="ticket-info-label">Seat Type</div>
+                <div class="ticket-info-value highlight">@Model.SeatType</div>
+            </div>
+
+            <div class="ticket-info-row">
+                <div class="ticket-info-label">Quantity</div>
+                <div class="ticket-info-value">@Model.Quantity Ticket(s)</div>
+            </div>
+
+            <div class="ticket-info-row">
+                <div class="ticket-info-label">Total Paid</div>
+                <div class="ticket-info-value">£@Model.TotalAmount</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ticket-right">
+        <span class="ticket-status-badge">
+            @Model.BookingStatus
+        </span>
+        
+        @if (ViewBag.QRCodeImage != null)
+        {
+            <div class="ticket-qr-code">
+                <img src="data:image/png;base64,@ViewBag.QRCodeImage" alt="QR Code">
+            </div>
+        }
+        
+        <div class="ticket-reference-label">Booking Reference</div>
+        <div class="ticket-reference-id">@Model.BookingReferenceNumber</div>
+        
+        <p class="ticket-scan-text">
+            Scan at entry
+        </p>
+    </div>
+</div>

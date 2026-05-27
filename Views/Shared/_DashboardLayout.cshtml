@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>@ViewData["Title"] - Dashboard</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/css/unified-theme.css?v=3">
+    <link rel="stylesheet" href="~/css/global-popup.css" />
+    <link rel="stylesheet" href="~/css/components.css?v=3">
+    <link rel="stylesheet" href="~/css/animations.css">
+    <link rel="stylesheet" href="~/css/dashboard.css?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <script>
+        // Check if page is loaded from bfcache (Back/Forward Cache)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        });
+    </script>
+    
+    <style>
+        body {
+            margin: 0;
+            background: var(--bg-light);
+        }
+        
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .dashboard-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-white);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            padding: var(--spacing-lg);
+            z-index: 100;
+        }
+        
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            color: #0b1b3a;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+        
+        .sidebar-menu-item {
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .sidebar-menu-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            color: var(--text-medium);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            font-weight: 500;
+        }
+        
+        .sidebar-menu-link:hover {
+            background: rgba(11, 27, 58, 0.08);
+            color: #0b1b3a;
+        }
+        
+        .sidebar-menu-link.active {
+            background: #0b1b3a;
+            color: white;
+        }
+        
+        .sidebar-menu-link i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-brand-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+        
+        .sidebar-divider {
+            margin: var(--spacing-lg) 0;
+            border-top: 1px solid var(--border-light);
+        }
+        
+        .dashboard-main {
+            margin-left: 280px;
+            flex: 1;
+            padding: var(--spacing-2xl);
+            min-height: 100vh;
+        }
+        
+        .dashboard-header {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dashboard-greeting {
+            margin: 0;
+            font-size: var(--font-size-2xl);
+            color: var(--text-dark);
+        }
+        
+        .dashboard-user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .dashboard-user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-light);
+        }
+        
+        .dashboard-user-initial {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        @@media (max-width: 768px) {
+            .dashboard-sidebar {
+                transform: translateX(-100%);
+                transition: transform var(--transition-base);
+            }
+            
+            .dashboard-sidebar.mobile-active {
+                transform: translateX(0);
+            }
+            
+            .dashboard-main {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    @{
+        var memberId = Context.Session.GetInt32("MemberID");
+        var fullName = Context.Session.GetString("MemberName") ?? "User";
+        var firstName = fullName.Split(' ')[0]; // Extract first name only
+        var profilePhoto = Context.Session.GetString("ProfilePhotoUrl");
+    }
+    
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <img src="~/images/logo.png" alt="Logo" class="sidebar-brand-logo">
+                CulturaPass
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item">
+                    <a href="@Url.Action("Index", "Dashboard")" 
+                       class="sidebar-menu-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" && ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+                        <i class="fas fa-th-large"></i>
+                        Overview
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="@Url.Action("MyBookings", "Dashboard")" 
+                       class="sidebar-menu-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyBookings" ? "active" : "")">
+                        <i class="fas fa-ticket-alt"></i>
+                        My Bookings
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="@Url.Action("MyReviews", "Dashboard")" 
+                       class="sidebar-menu-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyReviews" ? "active" : "")">
+                        <i class="fas fa-star"></i>
+                        My Reviews
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="@Url.Action("Settings", "Dashboard")" 
+                       class="sidebar-menu-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Settings" ? "active" : "")">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </a>
+                </li>
+                
+                <div class="sidebar-divider"></div>
+                
+                <li class="sidebar-menu-item">
+                    <a href="@Url.Action("Index", "Home")" class="sidebar-menu-link">
+                        <i class="fas fa-home"></i>
+                        Back to Home
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <form asp-controller="Account" asp-action="Logout" method="post" style="margin: 0;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="sidebar-menu-link" style="width: 100%; border: none; background: none; cursor: pointer; text-align: left;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign Out
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-header">
+                <h1 class="dashboard-greeting">Welcome back, @firstName! 👋</h1>
+                <div class="dashboard-user-profile">
+                    <span style="font-weight: 600; color: #0b1b3a; margin-right: 10px;">@firstName</span>
+                    @if (!string.IsNullOrEmpty(profilePhoto))
+                    {
+                        <img src="@profilePhoto" alt="Profile" class="dashboard-user-avatar">
+                    }
+                    else
+                    {
+                        <div class="dashboard-user-initial">
+                            @firstName.Substring(0, 1)
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            @RenderBody()
+        </main>
+    </div>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/global-popup.js"></script>
+</body>
+</html>

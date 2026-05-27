@@ -1,0 +1,256 @@
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\appsettings.Development.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\appsettings.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Event_Management_System.staticwebassets.runtime.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Event_Management_System.staticwebassets.endpoints.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Event_Management_System.exe
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Event_Management_System.deps.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Event_Management_System.runtimeconfig.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Event_Management_System.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Event_Management_System.pdb
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Azure.Core.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Azure.Identity.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Humanizer.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\Mono.TextTemplating.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\QRCoder.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.CodeDom.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Composition.Convention.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Composition.Hosting.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Composition.Runtime.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Composition.TypedParts.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Drawing.Common.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Memory.Data.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Runtime.Caching.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Security.Permissions.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\System.Windows.Extensions.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.csproj.AssemblyReference.cache
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.GeneratedMSBuildEditorConfig.editorconfig
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.AssemblyInfoInputs.cache
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.AssemblyInfo.cs
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.csproj.CoreCompileInputs.cache
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.MvcApplicationPartsAssemblyInfo.cache
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.RazorAssemblyInfo.cache
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.RazorAssemblyInfo.cs
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\rjimswa.dswa.cache.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\scopedcss\bundle\Event_Management_System.styles.css
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\scopedcss\projectbundle\Event_Management_System.bundle.scp.css
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\staticwebassets.build.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\staticwebassets.build.json.cache
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\staticwebassets.development.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Ma.A0410353.Up2Date
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\refint\Event_Management_System.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.pdb
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.genruntimeconfig.cache
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\ref\Event_Management_System.dll
+D:\Neerayan\BSc. Data_Science\Data & Web Development\Event_Management_System\obj\Debug\net8.0\Event_Management_System.sourcelink.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\appsettings.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Event_Management_System.staticwebassets.runtime.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Event_Management_System.staticwebassets.endpoints.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Event_Management_System.exe
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Event_Management_System.deps.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Event_Management_System.runtimeconfig.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Event_Management_System.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Event_Management_System.pdb
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Humanizer.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\QRCoder.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.Drawing.Common.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.Private.Windows.Core.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\System.Private.Windows.GdiPlus.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.csproj.AssemblyReference.cache
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.AssemblyInfoInputs.cache
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.AssemblyInfo.cs
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.csproj.CoreCompileInputs.cache
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.RazorAssemblyInfo.cache
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.RazorAssemblyInfo.cs
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.sourcelink.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\scopedcss\bundle\Event_Management_System.styles.css
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\scopedcss\projectbundle\Event_Management_System.bundle.scp.css
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\swae.build.ex.cache
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Ma.A0410353.Up2Date
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\refint\Event_Management_System.dll
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.pdb
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\Event_Management_System.genruntimeconfig.cache
+C:\Users\kisha\Desktop\Event_Management_System-Dayas\Event_Management_System\obj\Debug\net8.0\ref\Event_Management_System.dll

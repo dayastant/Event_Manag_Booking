@@ -1,0 +1,219 @@
+/* ===================================
+   Global Pill Navigation
+   =================================== */
+
+/* Navbar Container (The black pill) */
+.navbar-pill {
+  position: fixed;
+  top: 1.5rem; /* Floating from top */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  height: 70px;
+  background-color: #000000;
+  border-radius: 999px; /* Pill shape */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 1000;
+  transition: all 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Scroll Effect: Add blur and transparency */
+.navbar-pill.scrolled {
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  top: 1rem;
+  width: 95%;
+}
+
+/* Brand Logo Area */
+.navbar-brand-area {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo-circle {
+  width: 48px;
+  height: 48px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f46e5; /* Primary color icon */
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.brand-logo-circle:hover {
+  transform: scale(1.1);
+}
+
+/* Nav Links Container (Centered) */
+.navbar-links {
+  display: flex;
+  gap: 2.5rem;
+  margin: 0 auto; /* Center in the flex container */
+  padding-left: 2rem; /* Offset for logo balance if needed */
+}
+
+.nav-link-pill {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.nav-link-pill:hover,
+.nav-link-pill.active {
+  color: #ffffff !important;
+}
+
+.nav-link-pill.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: #ffffff;
+  border-radius: 50%;
+}
+
+/* Right Side Actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* The White Pill Button (e.g. Profile / Login) */
+.btn-pill-white {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.btn-pill-white:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+  color: #000000; /* Force text color */
+}
+
+/* Profile Dropdown Override */
+.nav-profile-trigger img.profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+/* Mobile Toggle Button */
+.mobile-toggle-btn {
+  display: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Visibility Utilities */
+.mobile-only-links {
+  display: none;
+}
+
+.member-name-text {
+  display: none;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 992px) {
+  .member-name-text {
+    display: inline;
+    margin-left: 0.5rem;
+    font-weight: 500;
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: visible;
+  }
+}
+
+.inline-form {
+  display: inline;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .navbar-pill {
+    padding: 0 1rem;
+  }
+
+  .navbar-links {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none; /* Hide links on mobile */
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    background-color: #000000;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 20px;
+    gap: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .mobile-toggle-btn {
+    display: block;
+  }
+
+  .navbar-actions {
+    display: none; /* Might want to move this into the mobile menu or keep it visible */
+  }
+
+  /* If we want actions visible in mobile menu */
+  .mobile-menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .mobile-only-links {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}

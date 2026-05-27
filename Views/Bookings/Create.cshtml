@@ -1,0 +1,846 @@
+@model Event_Management_System.Models.Event
+@{
+    ViewData["Title"] = "Book Tickets";
+    var memberId = Context.Session.GetInt32("MemberID");
+}
+
+<!-- <link rel="stylesheet" href="~/css/unified-theme.css?v=3"> -->
+<link rel="stylesheet" href="~/css/booking.css">
+<link rel="stylesheet" href="~/css/payment.css">
+<link rel="stylesheet" href="~/css/payment-additions.css">
+<script src="~/js/card-detection.js"></script>
+
+<section class="section booking-section">
+    <!-- Hide Navbar and Footer specifically for this page -->
+    <style>
+        .navbar-pill { display: none !important; }
+        .site-footer { display: none !important; }
+    </style>
+
+    <div class="container">
+        <!-- Back Button -->
+        <div class="back-btn-container">
+            <a href="@Url.Action("Details", "Events", new { id = Model.EventID })" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Event
+            </a>
+        </div>
+
+        <h2 class="mb-4">Book Your Tickets</h2>
+        
+        <div class="row">
+            <!-- Left Column: Event Details & Selection (60%) -->
+            <div class="col booking-main-col">
+                <!-- Premium Event Summary Card -->
+                <div class="event-summary-card">
+                    <h2 class="event-summary-title">@Model.EventName</h2>
+                    <p class="event-summary-date">
+                        <strong>@Model.EventDate.ToString("dddd, MMMM dd, yyyy")</strong>
+                    </p>
+                    <p class="event-summary-venue">@(Model.Venue?.VenueName ?? "TBA")</p>
+                </div>
+
+                <!-- Booking Form -->
+                <form id="bookingForm" asp-controller="Bookings" asp-action="Create" method="post">
+                    <input type="hidden" name="EventID" value="@Model.EventID" />
+                    <input type="hidden" name="MemberID" value="@memberId" />
+                    <input type="hidden" name="TotalAmount" id="totalAmountInput" />
+                    <input type="hidden" name="SeatType" id="selectedSeatType" />
+                    
+                    <!-- Seat Type Selection with Cards -->
+                    <div class="mb-3">
+                        <label class="form-label form-label-bold">Select Seat Type *</label>
+                        <div class="seat-type-grid">
+                            @if (Model.Tickets != null && Model.Tickets.Any())
+                            {
+                                foreach (var ticket in Model.Tickets)
+                                {
+                                    <div class="seat-type-card" data-seat-type="@ticket.SeatType" data-price="@ticket.Price" data-available="@ticket.AvailableQuantity">
+                                        <h4 class="seat-card-title">@ticket.SeatType</h4>
+                                        <p class="seat-card-price">£@ticket.Price</p>
+                                        <p class="seat-card-availability">@ticket.AvailableQuantity seats available</p>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    
+                    <!-- Number of Tickets with +/- Buttons -->
+                    <div class="mb-3">
+                        <label class="form-label form-label-bold">Number of Tickets *</label>
+                        <div class="quantity-control">
+                            <button type="button" id="decreaseBtn" class="quantity-btn">-</button>
+                            <input type="number" name="Quantity" id="quantityInput" value="1" min="1" max="10" readonly class="quantity-input" />
+                            <button type="button" id="increaseBtn" class="quantity-btn">+</button>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="PaymentMethod" id="paymentMethodInput" />
+                    
+                    <!-- Special Requests -->
+                    <div class="mb-3">
+                        <label class="form-label form-label-bold">Special Requests (Optional)</label>
+                        <textarea name="SpecialRequests" placeholder="Any special requirements or preferences..." class="special-request-input"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Column: Booking Summary (40%) -->
+            <div class="col booking-sidebar-col">
+                <div class="card sticky-summary-card">
+                    <div class="card-header">
+                        <h4 class="summary-card-title">Booking Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="summaryContent" style="min-height: 200px;">
+                            <div class="text-center text-muted py-5">
+                                <i class="fas fa-ticket-alt" style="font-size: 3rem; opacity: 0.3;"></i>
+                                <p class="mt-3">Select your tickets to see the summary</p>
+                            </div>
+                        </div>
+
+                        <div id="summaryDetails" style="display: none;">
+                            <div class="summary-divider">
+                                <div class="summary-row">
+                                    <span class="text-secondary">Seat Type:</span>
+                                    <strong id="summarySeatType">-</strong>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="text-secondary">Quantity:</span>
+                                    <strong id="summaryQuantity">-</strong>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="text-secondary">Price per ticket:</span>
+                                    <strong id="summaryPricePerTicket">-</strong>
+                                </div>
+                            </div>
+
+                            <div class="summary-divider">
+                                <div class="summary-row">
+                                    <span class="text-secondary">Subtotal:</span>
+                                    <strong id="summarySubtotal">$0.00</strong>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="text-secondary">Service Fee (5%):</span>
+                                    <strong id="summaryServiceFee">$0.00</strong>
+                                </div>
+                            </div>
+
+                            <div class="summary-total-container">
+                                <div class="summary-total-row">
+                                    <span class="summary-total-label">Total:</span>
+                                    <span id="summaryTotal" class="summary-total-value">$0.00</span>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="proceedToPayment()">
+                                Proceed to Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Modal - Redesigned to match reference image -->
+<div class="premium-modal" id="paymentModal">
+    <div class="premium-modal-content">
+        <div class="premium-modal-header">
+            <h2 class="premium-modal-title">Select Payment Method</h2>
+        </div>
+        <div class="premium-modal-body">
+            <!-- Payment Method Tabs -->
+            <div class="payment-tabs">
+                <button type="button" class="payment-tab active" data-tab="direct-payment" onclick="switchPaymentTab('direct-payment')">
+                    <i class="fas fa-bolt"></i>
+                    Direct Payment
+                </button>
+                <button type="button" class="payment-tab" data-tab="credit-card" onclick="switchPaymentTab('credit-card')">
+                    <i class="far fa-credit-card"></i>
+                    Credit Card
+                </button>
+                <button type="button" class="payment-tab" data-tab="paypal" onclick="switchPaymentTab('paypal')">
+                    <i class="fab fa-paypal"></i>
+                    PayPal
+                </button>
+                <button type="button" class="payment-tab" data-tab="bank-transfer" onclick="switchPaymentTab('bank-transfer')">
+                    <i class="fas fa-university"></i>
+                    Bank Transfer
+                </button>
+            </div>
+
+            <!-- Direct Payment Section -->
+            <div class="payment-section active" id="direct-payment-section">
+                <div class="direct-payment-container">
+                    <div class="direct-confirmation-header">
+                        <div class="direct-payment-icon-wrapper">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="direct-payment-text">
+                            <h3>Instant Confirmation</h3>
+                            <p>Complete your booking instantly with a single click.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-summary-box">
+                        <div class="summary-row">
+                            <span>Event:</span>
+                            <span id="directEventName">@Model.EventName</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Seat Type:</span>
+                            <span id="directSeatType">-</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Quantity:</span>
+                            <span id="directQuantity">-</span>
+                        </div>
+                        <div class="summary-row total-row">
+                            <span>Total Amount:</span>
+                            <span id="directTotalAmount">£0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credit Card Section -->
+            <div class="payment-section" id="credit-card-section">
+                <!-- New Card Form -->
+                <div class="card-input-form">
+                   <!-- Card Number with Brand Icon -->
+                    <div class="form-group-payment">
+                        <label class="form-label-payment">Card number</label>
+                        <div class="card-number-wrapper">
+                            <input type="text" class="form-input-payment" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                            <div class="card-brand-icon" id="cardBrandIcon"></div>
+                        </div>
+                    </div>
+
+                    <!-- Name on Card -->
+                    <div class="form-group-payment">
+                        <label class="form-label-payment">Name on card</label>
+                        <input type="text" class="form-input-payment" id="cardholderName" placeholder="David Smith">
+                    </div>
+
+                    <!-- Expiry and CVV -->
+                    <div class="form-row">
+                        <div class="form-group-payment">
+                            <label class="form-label-payment">Expiration date (MM/YY)</label>
+                            <input type="text" class="form-input-payment" id="expiryDate" placeholder="04/24" maxlength="5">
+                        </div>
+                        <div class="form-group-payment">
+                            <label class="form-label-payment">Security code (CVV)</label>
+                            <input type="text" class="form-input-payment" id="cvv" placeholder="203" maxlength="4">
+                        </div>
+                    </div>
+
+                    <!-- Card Type Radio Buttons -->
+                    <div class="form-group-payment">
+                        <label class="form-label-payment">Type of Card</label>
+                        <div class="card-type-options">
+                            <label class="card-type-option">
+                                <input type="radio" name="cardType" value="debit" id="debitCard" checked>
+                                <span class="card-type-label">Debit card</span>
+                            </label>
+                            <label class="card-type-option">
+                                <input type="radio" name="cardType" value="credit" id="creditCard">
+                                <span class="card-type-label">Credit card</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Save Card Checkbox -->
+                    <div class="save-card-checkbox">
+                        <input type="checkbox" id="saveCardCheckbox">
+                        <label for="saveCardCheckbox">Save this card</label>
+                    </div>
+                </div>
+
+                <!-- Security Note -->
+                <div class="security-note">
+                    <i class="fas fa-lock"></i>
+                    <p>Your information is safe</p>
+                </div>
+            </div>
+
+            <!-- PayPal Section -->
+            <div class="payment-section" id="paypal-section">
+                <div class="paypal-section-content">
+                    <div class="paypal-logo">
+                        <i class="fab fa-paypal"></i>
+                    </div>
+                    <p class="paypal-description">
+                        You will be redirected to PayPal to complete your payment securely.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bank Transfer Section -->
+            <div class="payment-section" id="bank-transfer-section">
+                <div class="form-group-payment">
+                    <label class="form-label-payment">Select Bank</label>
+                    <select class="bank-select-payment" id="transferBank">
+                        <option value="">Choose your bank</option>
+                        <option value="Chase">Chase Bank</option>
+                        <option value="BankOfAmerica">Bank of America</option>
+                        <option value="Wells">Wells Fargo</option>
+                        <option value="Citibank">Citibank</option>
+                        <option value="HSBF">HSBC</option>
+                    </select>
+                </div>
+
+                <div class="bank-transfer-info">
+                    <h5>Bank Transfer Instructions</h5>
+                    <div class="bank-details-grid">
+                        <div class="bank-detail-item">
+                            <span class="detail-label">Account Name</span>
+                            <span class="detail-value">CulturaPass Events</span>
+                        </div>
+                        <div class="bank-detail-item">
+                            <span class="detail-label">Account Number</span>
+                            <span class="detail-value">1234567890</span>
+                        </div>
+                        <div class="bank-detail-item">
+                            <span class="detail-label">Routing Number</span>
+                            <span class="detail-value">021000021</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bank Slip Upload -->
+                <div class="form-group-payment mt-3">
+                    <label class="form-label-payment">Upload Bank Slip (PDF or Image)</label>
+                    <div class="file-upload-container" id="dropZone">
+                        <input type="file" id="bankSlipUpload" accept="image/*,.pdf" hidden>
+                        <div class="upload-content" id="uploadContent">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p class="upload-text">Click or drag file here to upload</p>
+                            <span class="upload-hint">Supported formats: JPG, PNG, PDF (Max 2MB)</span>
+                        </div>
+                        <div class="file-preview hidden" id="filePreview">
+                            <div class="file-info">
+                                <i class="fas fa-file-alt file-icon"></i>
+                                <span class="file-name" id="fileName">filename.pdf</span>
+                            </div>
+                            <button type="button" class="remove-file-btn" id="removeFileBtn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-note">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Please upload proof of payment to confirm your booking</p>
+                </div>
+            </div>
+
+            <!-- Terms Checkbox -->
+            <div class="form-group" style="margin-top: 1.5rem; margin-bottom: 0;">
+                <div class="save-card-checkbox">
+                    <input type="checkbox" id="paymentTermsCheck">
+                    <label for="paymentTermsCheck">I agree to the payment terms and conditions</label>
+                </div>
+            </div>
+        </div>
+        <div class="premium-modal-footer">
+            <button type="button" class="btn-payment-secondary" onclick="closePaymentModal()">Cancel</button>
+            <button type="button" class="btn-payment-primary" onclick="confirmBooking()" id="confirmBookingBtn" disabled>
+                <i class="fas fa-shield-alt"></i> Pay $<span id="paymentTotalAmount">600</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+<script>
+    let selectedSeatType = null;
+    let pricePerTicket = 0;
+    let quantity = 1;
+    const serviceFeeRate = 0.05; // 5%
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Seat Type Card Selection
+        const seatCards = document.querySelectorAll('.seat-type-card');
+        seatCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selection from all cards
+                seatCards.forEach(c => c.classList.remove('selected'));
+                
+                // Select this card
+                this.classList.add('selected');
+                selectedSeatType = this.dataset.seatType;
+                pricePerTicket = parseFloat(this.dataset.price);
+                
+                // Update hidden field
+                const hiddenInput = document.getElementById('selectedSeatType');
+                if(hiddenInput) hiddenInput.value = selectedSeatType;
+                
+                // Update summary
+                updateSummary();
+            });
+        });
+        
+        // Quantity +/- Buttons
+        const decreaseBtn = document.getElementById('decreaseBtn');
+        const increaseBtn = document.getElementById('increaseBtn');
+        const quantityInput = document.getElementById('quantityInput');
+        
+        if(decreaseBtn && increaseBtn && quantityInput) {
+            decreaseBtn.addEventListener('click', function() {
+                if (quantity > 1) {
+                    quantity--;
+                    quantityInput.value = quantity;
+                    updateSummary();
+                }
+            });
+            
+            increaseBtn.addEventListener('click', function() {
+                if (quantity < 10) {
+                    quantity++;
+                    quantityInput.value = quantity;
+                    updateSummary();
+                }
+            });
+        }
+        
+        // Checkbox Listener
+        const termsCheckbox = document.getElementById('paymentTermsCheck');
+        if (termsCheckbox) {
+            termsCheckbox.addEventListener('change', validatePayment);
+        }
+        
+        // Initialize payment tab logic
+        // default to first tab if modal was open, but it's hidden initially
+    });
+    
+    // Main Validation Function
+    function validatePayment() {
+        const payButton = document.getElementById('confirmBookingBtn');
+        const termsAccepted = document.getElementById('paymentTermsCheck').checked;
+        const currentTab = document.querySelector('.payment-tab.active');
+        const tabName = currentTab ? currentTab.dataset.tab : '';
+        
+        const totalAmount = calculateTotal();
+        
+        // Update price display
+        const totalDisplay = document.getElementById('paymentTotalAmount');
+        if(totalDisplay) totalDisplay.textContent = totalAmount.toFixed(2); // Just the number, the $ is outside span
+        
+        let isValid = false;
+        let buttonText = `Pay $${totalAmount.toFixed(2)}`;
+        
+        if (tabName === 'direct-payment') {
+            isValid = true;
+            buttonText = `Confirm Booking $${totalAmount.toFixed(2)}`;
+        } else if (tabName === 'paypal') {
+            isValid = true;
+            buttonText = `Continue to PayPal`;
+        } else if (tabName === 'bank-transfer') {
+            isValid = true;
+            buttonText = `Confirm Bank Transfer`;
+        } else if (tabName === 'credit-card') {
+            const cardNumber = document.getElementById('cardNumber').value;
+             isValid = (cardNumber.length > 10); // Simple check
+        }
+        
+        // Button State
+        payButton.disabled = !(isValid && termsAccepted);
+        payButton.innerHTML = `<i class="fas fa-shield-alt"></i> ${buttonText}`;
+    }
+    
+    function updateSummary() {
+        if (selectedSeatType && pricePerTicket > 0) {
+            const subtotal = pricePerTicket * quantity;
+            const serviceFee = subtotal * serviceFeeRate;
+            const total = subtotal + serviceFee;
+            
+            // Update summary display elements if they exist
+            const elSeatType = document.getElementById('summarySeatType');
+            if(elSeatType) elSeatType.textContent = selectedSeatType;
+            
+            const elQuantity = document.getElementById('summaryQuantity');
+            if(elQuantity) elQuantity.textContent = quantity;
+            
+            const elPrice = document.getElementById('summaryPricePerTicket');
+            if(elPrice) elPrice.textContent = '$' + pricePerTicket.toFixed(2);
+            
+            const elSubtotal = document.getElementById('summarySubtotal');
+            if(elSubtotal) elSubtotal.textContent = '$' + subtotal.toFixed(2);
+            
+            const elService = document.getElementById('summaryServiceFee');
+            if(elService) elService.textContent = '$' + serviceFee.toFixed(2);
+            
+            const elTotal = document.getElementById('summaryTotal');
+            if(elTotal) elTotal.textContent = '$' + total.toFixed(2);
+            
+            const elInput = document.getElementById('totalAmountInput');
+            if(elInput) elInput.value = total.toFixed(2);
+            
+            // Show summary
+            const summaryContent = document.getElementById('summaryContent');
+            const summaryDetails = document.getElementById('summaryDetails');
+            if(summaryContent) summaryContent.style.display = 'none';
+            if(summaryDetails) summaryDetails.style.display = 'block';
+        }
+    }
+    
+    // Calculate total amount
+    function calculateTotal() {
+        const subtotal = pricePerTicket * quantity;
+        const serviceFee = subtotal * serviceFeeRate;
+        return subtotal + serviceFee;
+    }
+    
+    // Switch payment tab
+    let selectedPaymentMethod = 'direct-payment';
+    
+    function switchPaymentTab(tabName) {
+        // Update selected payment method
+        selectedPaymentMethod = tabName;
+        
+        // Hide all sections
+        const sections = document.querySelectorAll('.payment-section');
+        sections.forEach(section => section.classList.remove('active'));
+        
+        // Deactivate all tabs
+        const tabs = document.querySelectorAll('.payment-tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        
+        // Show selected section
+        const selectedSection = document.getElementById(tabName + '-section');
+        if(selectedSection) selectedSection.classList.add('active');
+        
+        // Activate selected tab
+        const selectedTab = document.querySelector(`[data-tab="${tabName}"]`);
+        if(selectedTab) selectedTab.classList.add('active');
+        
+        // Validate payment
+        validatePayment();
+    }
+
+    // Modal Functions
+    function proceedToPayment() {
+        if (!selectedSeatType) {
+            alert('Please select a seat type first.');
+            return;
+        }
+        
+        // Populate modal data before opening
+        populateModalData();
+        
+        // Open modal
+        const modal = document.getElementById('paymentModal');
+        if(modal) {
+            modal.classList.add('active');
+            // Select default tab
+            switchPaymentTab('direct-payment');
+        }
+    }
+    
+    function populateModalData() {
+        const totalAmount = calculateTotal();
+        
+        // Direct Payment Section
+        const directSeat = document.getElementById('directSeatType');
+        if(directSeat) directSeat.textContent = selectedSeatType;
+        
+        const directQty = document.getElementById('directQuantity');
+        if(directQty) directQty.textContent = quantity;
+        
+        const directTotal = document.getElementById('directTotalAmount');
+        if(directTotal) directTotal.textContent = '$' + totalAmount.toFixed(2);
+        
+        // Ensure event name is set (it's static from Model but good to double check if we switch to dynamic later)
+        // const eventName = document.getElementById('directEventName');
+        
+        // Update total in button (initially handled by validatePayment/switchPaymentTab but good to have base values)
+    }
+    
+    function closePaymentModal() {
+        const modal = document.getElementById('paymentModal');
+        if(modal) modal.classList.remove('active');
+    }
+    
+    // =============== FILE UPLOAD FUNCTIONALITY ===============
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('bankSlipUpload');
+    const uploadContent = document.getElementById('uploadContent');
+    const filePreview = document.getElementById('filePreview');
+    const fileName = document.getElementById('fileName');
+    const removeFileBtn = document.getElementById('removeFileBtn');
+    
+    if (dropZone && fileInput) {
+        // Click to upload
+        dropZone.addEventListener('click', function(e) {
+            if (e.target !== removeFileBtn && !removeFileBtn.contains(e.target)) {
+                fileInput.click();
+            }
+        });
+        
+        // Handle file selection
+        fileInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                handleFile(this.files[0]);
+            }
+        });
+        
+        // Drag and drop events
+        dropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        dropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+        
+        dropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+        
+        // Remove file
+        if (removeFileBtn) {
+            removeFileBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent triggering dropZone click
+                fileInput.value = '';
+                showUploadContent();
+                validatePayment();
+            });
+        }
+    }
+    
+    function handleFile(file) {
+        if (!file) return;
+        
+        // Check file type (image or pdf)
+        const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+        if (!validTypes.includes(file.type)) {
+            alert('Please upload a valid image (JPG, PNG) or PDF file.');
+            return;
+        }
+        
+        // Show preview
+        if (fileName) fileName.textContent = file.name;
+        if (uploadContent) uploadContent.classList.add('hidden');
+        if (filePreview) filePreview.classList.remove('hidden');
+        
+        // Trigger validation
+        validatePayment();
+    }
+    
+    function showUploadContent() {
+        if (uploadContent) uploadContent.classList.remove('hidden');
+        if (filePreview) filePreview.classList.add('hidden');
+    }
+
+    // Bank Selection Listener
+    const transferBankSelect = document.getElementById('transferBank');
+    if (transferBankSelect) {
+        transferBankSelect.addEventListener('change', validatePayment);
+    }
+    
+    // Main Validation Function
+    function validatePayment() {
+        const payButton = document.getElementById('confirmBookingBtn');
+        if(!payButton) return;
+        
+        const termsAccepted = document.getElementById('paymentTermsCheck') ? document.getElementById('paymentTermsCheck').checked : false;
+        const currentTab = document.querySelector('.payment-tab.active');
+        const tabName = currentTab ? currentTab.dataset.tab : '';
+        
+        const totalAmount = calculateTotal();
+        
+        // Update price display
+        const totalDisplay = document.getElementById('paymentTotalAmount');
+        if(totalDisplay) totalDisplay.textContent = totalAmount.toFixed(2);
+        
+        let isValid = false;
+        let buttonText = `Pay $${totalAmount.toFixed(2)}`;
+        
+        if (tabName === 'direct-payment') {
+            isValid = true;
+            buttonText = `Confirm Booking $${totalAmount.toFixed(2)}`;
+        } else if (tabName === 'paypal') {
+            isValid = true;
+            buttonText = `Continue to PayPal`;
+        } else if (tabName === 'bank-transfer') {
+            const bank = document.getElementById('transferBank');
+            const fileUpload = document.getElementById('bankSlipUpload');
+            
+            const bankSelected = bank && bank.value !== '';
+            const fileUploaded = fileUpload && fileUpload.files.length > 0;
+            
+            isValid = bankSelected && fileUploaded;
+            buttonText = `Confirm Bank Transfer`;
+        } else if (tabName === 'credit-card') {
+            // Validate all credit card fields
+            const cardNumber = document.getElementById('cardNumber');
+            const cardholderName = document.getElementById('cardholderName');
+            const expiryDate = document.getElementById('expiryDate');
+            const cvv = document.getElementById('cvv');
+            
+            const cardNumberValid = cardNumber && cardNumber.value.replace(/\s/g, '').length >= 13;
+            const cardholderValid = cardholderName && cardholderName.value.trim().length > 0;
+            const expiryValid = expiryDate && /^\d{2}\/\d{2}$/.test(expiryDate.value);
+            const cvvValid = cvv && cvv.value.length >= 3;
+            
+            isValid = cardNumberValid && cardholderValid && expiryValid && cvvValid;
+            buttonText = `Pay $${totalAmount.toFixed(2)}`;
+        }
+        
+        // Button State
+        payButton.disabled = !(isValid && termsAccepted);
+        payButton.innerHTML = `<i class="fas fa-shield-alt"></i> ${buttonText}`;
+    }
+
+    function confirmBooking() {
+        if (!selectedPaymentMethod) return;
+        
+        // Set payment method in hidden field
+        const payMethodInput = document.getElementById('paymentMethodInput');
+        if(payMethodInput) payMethodInput.value = selectedPaymentMethod;
+        
+        // Submit the main form
+        document.getElementById('bookingForm').submit();
+    }
+    
+    // Form submission validation
+    const bookingForm = document.getElementById('bookingForm');
+    if(bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+            if (!selectedSeatType) {
+                e.preventDefault();
+                alert('Please select a seat type');
+                return false;
+            }
+        });
+    }
+    
+    // Close modal on outside click
+    const paymentModal = document.getElementById('paymentModal');
+    if(paymentModal) {
+        paymentModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePaymentModal();
+            }
+        });
+    }
+    
+    // =============== CREDIT CARD FUNCTIONALITY ===============
+    
+    // Card number formatting and brand detection
+    const cardNumberInput = document.getElementById('cardNumber');
+    const cardBrandIcon = document.getElementById('cardBrandIcon');
+    
+    if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = '';
+            
+          // Format with spaces every 4 digits
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            
+            e.target.value = formattedValue;
+            
+            // Detect card brand
+            detectCardBrand(value);
+            
+            // Trigger validation
+            validatePayment();
+        });
+        
+        // Only allow numbers and spaces
+        cardNumberInput.addEventListener('keypress', function(e) {
+            if (e.key.length === 1 && !(/[0-9]/.test(e.key))) {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    function detectCardBrand(cardNumber) {
+        const cleanNumber = cardNumber.replace(/\s/g, '');
+        if (!cardBrandIcon) return;
+        
+        // Reset
+        cardBrandIcon.className = 'card-brand-icon';
+        
+        if (cleanNumber.length < 2) return;
+        
+        // Visa: starts with 4
+        if (cleanNumber[0] === '4') {
+            cardBrandIcon.className = 'card-brand-icon fab fa-cc-visa';
+        }
+        // Mastercard: starts with 51-55 or 2221-2720
+        else if (cleanNumber.match(/^5[1-5]/) || cleanNumber.match(/^2[2-7]/)) {
+            cardBrandIcon.className = 'card-brand-icon fab fa-cc-mastercard';
+        }
+        // Amex: starts with 34 or 37
+        else if (cleanNumber.match(/^3[47]/)) {
+            cardBrandIcon.className = 'card-brand-icon fab fa-cc-amex';
+        }
+        // Discover: starts with 6011, 622126-622925, 644-649, 65
+        else if (cleanNumber.match(/^6(?:011|5|4[4-9]|22)/)) {
+            cardBrandIcon.className = 'card-brand-icon fab fa-cc-discover';
+        }
+    }
+    
+    // Expiry date formatting
+    const expiryInput = document.getElementById('expiryDate');
+    if (expiryInput) {
+        expiryInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            
+            e.target.value = value;
+            validatePayment();
+        });
+        
+        expiryInput.addEventListener('keypress', function(e) {
+            if (e.key.length === 1 && !(/[0-9]/.test(e.key))) {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    // CVV formatting
+    const cvvInput = document.getElementById('cvv');
+    if (cvvInput) {
+        cvvInput.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+            validatePayment();
+        });
+        
+        cvvInput.addEventListener('keypress', function(e) {
+            if (e.key.length === 1 && !(/[0-9]/.test(e.key))) {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    // Cardholder name validation
+    const cardholderInput = document.getElementById('cardholderName');
+    if (cardholderInput) {
+        cardholderInput.addEventListener('input', validatePayment);
+    }
+
+</script>
+
+}

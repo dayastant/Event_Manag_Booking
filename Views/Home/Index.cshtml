@@ -1,0 +1,505 @@
+@model List<Event_Management_System.Models.Event>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<link rel="stylesheet" href="~/css/home.css" />
+<link rel="stylesheet" href="~/css/testimonials.css" />
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-left">
+            <h1 class="hero-title">
+                Discover<br>
+                unforgettable<br>
+                experiences with<br> <span style="color: #0b1b3a; font-weight: semi-bold;">"CulturaPass."</span>
+            </h1>
+            <p class="hero-subtitle">
+                Book tickets for concerts, workshops, exhibitions and cultural events. 
+                Experience the best of entertainment in your metropolitan area.
+            </p>
+            <a href="@Url.Action("Index", "Events")" class="btn-dark">Explore Now</a>
+        </div>
+        <div class="hero-right">
+            <!-- Main Backdrop Image -->
+            <div class="hero-main-visual">
+                <img src="~/images/hero_event.jpg" alt="Concert Crowd" class="main-backdrop-img" onerror="this.src='/images/pic-05.jpg'">
+                
+                @{
+                    var floatingEventsData = ViewBag.FloatingEvents as List<Event_Management_System.Models.Event> ?? new List<Event_Management_System.Models.Event>();
+                    var floatingEvent1 = floatingEventsData.ElementAtOrDefault(0);
+                    var floatingEvent2 = floatingEventsData.ElementAtOrDefault(1);
+                }
+
+                @if (floatingEvent1 != null)
+                {
+                    <!-- Floating Card 1 (Left Overlap) -->
+                    <a href="@Url.Action("Details", "Events", new { id = floatingEvent1.EventID })" class="hero-float-card card-left" style="text-decoration: none;">
+                        <div class="float-img-wrapper">
+                            <img src="@(floatingEvent1.EventImageBase64 ?? Url.Content("~/images/pic-01.jpg"))" alt="@floatingEvent1.EventName" onerror="this.src='/images/pic-01.jpg'">
+                        </div>
+                        <div class="float-content">
+                            <span class="float-badge">@floatingEvent1.Category</span>
+                            <h5>@floatingEvent1.EventName</h5>
+                            <p class="float-time">@DateTime.Today.Add(floatingEvent1.StartTime).ToString("hh:mm tt") - @DateTime.Today.Add(floatingEvent1.EndTime).ToString("hh:mm tt")</p>
+                            <span class="float-btn">Get Tickets</span>
+                        </div>
+                    </a>
+                }
+
+                @if (floatingEvent2 != null)
+                {
+                    <!-- Floating Card 2 (Top Right) -->
+                    <a href="@Url.Action("Details", "Events", new { id = floatingEvent2.EventID })" class="hero-float-card card-right" style="text-decoration: none;">
+                        <div class="float-img-wrapper">
+                            <img src="@(floatingEvent2.EventImageBase64 ?? Url.Content("~/images/pic-02.jpg"))" alt="@floatingEvent2.EventName" onerror="this.src='/images/pic-02.jpg'">
+                        </div>
+                        <div class="float-content">
+                            <span class="float-badge">@floatingEvent2.Category</span>
+                            <h5>@floatingEvent2.EventName</h5>
+                            <p class="float-time">@DateTime.Today.Add(floatingEvent2.StartTime).ToString("hh:mm tt") - @DateTime.Today.Add(floatingEvent2.EndTime).ToString("hh:mm tt")</p>
+                            <span class="float-btn">Get Tickets</span>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partners Section -->
+<section class="partners">
+    <div class="container">
+        <div class="partners-grid">
+            <div class="partner-logo">
+                <i class="fas fa-calendar-check"></i>
+                <span>Sylvester</span>
+            </div>
+            <div class="partner-logo">
+                <i class="fas fa-ticket-alt"></i>
+                <span>Metroclub</span>
+            </div>
+            <div class="partner-logo">
+                <i class="fas fa-music"></i>
+                <span>Iconic</span>
+            </div>
+            <div class="partner-logo">
+                <i class="fas fa-star"></i>
+                <span>FeatherDev</span>
+            </div>
+            <div class="partner-logo">
+                <i class="fas fa-crown"></i>
+                <span>Nut.</span>
+            </div>
+            <div class="partner-logo">
+                <i class="fas fa-gem"></i>
+                <span>Capsule</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Section -->
+<section class="feature">
+    <div class="container">
+        <div class="feature-grid">
+            <div class="feature-left">
+                <div class="feature-blob"></div>
+                <div class="feature-img-wrapper">
+                    <img src="~/images/pic-01.jpg" alt="Event Experience" class="feature-main-img">
+                    <img src="~/images/pic-04.jpg" alt="Calendar" class="feature-calendar-img">
+                </div>
+            </div>
+            <div class="feature-right">
+                <h2>Where excitement meets unforgettable moments</h2>
+                <p>
+                    Experience the best cultural events in your city with metropolitan cultural council's official ticketing platform, <span style="color: #0b1b3a; font-weight: bold;">CulturaPass</span>. From concerts to exhibitions, 
+                    workshops to performances - we bring together the best entertainment right to your fingertips. 
+                    Join thousands of event-goers who trust us for their memorable experiences.
+                </p>
+                <a href="@Url.Action("About", "Home")" class="btn-dark">Learn More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="about-stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h2 class="stat-number">1500+</h2>
+                <p class="stat-label">EVENTS HOSTED</p>
+            </div>
+            <div class="stat-item">
+                <h2 class="stat-number">50K+</h2>
+                <p class="stat-label">TICKETS SOLD</p>
+            </div>
+            <div class="stat-item">
+                <h2 class="stat-number">25+</h2>
+                <p class="stat-label">VENUES</p>
+            </div>
+            <div class="stat-item">
+                <h2 class="stat-number">10K+</h2>
+                <p class="stat-label">HAPPY ATTENDEES</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Upcoming Events Section -->
+<section class="events">
+    <div class="container">
+        <div class="section-header">
+            <h2>Upcoming Events</h2>
+            <p>What's on the time is quite special. <br/>All are limited-capacity and will sell out fast so grab tickets while you can!</p>
+        </div>
+        
+        <div class="events-grid">
+            @foreach (var evt in Model.Take(3))
+            {
+                <div class="event-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="event-badge" style="margin:0;">@evt.Category</span>
+                        <span class="status-badge-user @evt.Status.ToLower()">@evt.Status</span>
+                    </div>
+                    <h3>@evt.EventName</h3>
+                    <p class="event-desc">@(evt.Description?.Length > 120 ? evt.Description.Substring(0, 120) + "..." : evt.Description ?? "Experience an amazing event with great performances and unforgettable moments.")</p>
+                    <div class="event-meta">
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>@(evt.Venue?.VenueName ?? "TBA")</span>
+                        </div>
+                        <div class="event-datetime">
+                            <div>
+                                <i class="far fa-calendar"></i>
+                                <span>@evt.EventDate.ToString("MMM dd, yyyy")</span>
+                            </div>
+                            <div>
+                                <i class="far fa-clock"></i>
+                                <span>@DateTime.Today.Add(evt.StartTime).ToString("hh:mm tt")</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Details", "Events", new { id = evt.EventID })" class="event-btn">View Details</a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Services</h2>
+            <p>Everything you need for a seamless event booking experience</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <h3>Easy Booking</h3>
+                <p>Quick and simple online ticket booking with instant confirmation</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Payments</h3>
+                <p>Industry-standard encryption for safe transactions</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h3>QR E-Tickets</h3>
+                <p>Digital tickets with QR codes for contactless entry</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock customer assistance whenever you need</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- System Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container">
+        <h2>What Our Users Say</h2>
+        <p style="text-align: center; color: #6b7280;">Real feedback from event-goers about the CulturaPass platform</p>
+        
+        <div class="testimonials-carousel-container">
+            <div class="testimonials-track">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">SJ</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah Johnson</h4>
+                            <span class="testimonial-category">Music Enthusiast</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "CulturaPass makes booking so easy! The QR code feature is brilliant - no more printed tickets. 
+                        I've attended over 15 concerts this year and the experience has been seamless every time."
+                    </p>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">MT</div>
+                        <div class="testimonial-info">
+                            <h4>Mike Thompson</h4>
+                            <span class="testimonial-category">Film Buff</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Best event platform I've used! Great selection of workshops and film screenings. 
+                        The interface is intuitive and finding events in my area is super convenient."
+                    </p>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">EL</div>
+                        <div class="testimonial-info">
+                            <h4>Emma Lee</h4>
+                            <span class="testimonial-category">Theater Fan</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "The clean interface and seamless booking process make CulturaPass my go-to for theater tickets. 
+                        Customer support is responsive and helpful whenever I have questions."
+                    </p>
+                </div>
+
+                <!-- Testimonial 4 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">JC</div>
+                        <div class="testimonial-info">
+                            <h4>James Carter</h4>
+                            <span class="testimonial-category">Workshop Enthusiast</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "I love discovering new workshops through CulturaPass. The platform has exposed me to 
+                        amazing educational experiences I wouldn't have found otherwise. Highly recommend!"
+                    </p>
+                </div>
+
+                <!-- Testimonial 5 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">RP</div>
+                        <div class="testimonial-info">
+                            <h4>Rachel Patel</h4>
+                            <span class="testimonial-category">Exhibition Lover</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "As an art enthusiast, I appreciate how CulturaPass curates exhibition events. 
+                        The booking process is quick, and I always get my e-tickets within seconds."
+                    </p>
+                </div>
+
+                <!-- Testimonial 6 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">DM</div>
+                        <div class="testimonial-info">
+                            <h4>David Martinez</h4>
+                            <span class="testimonial-category">Sports Fan</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "From sports events to comedy shows, CulturaPass has it all! The mobile-friendly 
+                        design makes booking on-the-go a breeze. Five stars!"
+                    </p>
+                </div>
+
+                <!-- Testimonial 7 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">LW</div>
+                        <div class="testimonial-info">
+                            <h4>Lisa Wong</h4>
+                            <span class="testimonial-category">Comedy Enthusiast</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Never miss a comedy show thanks to CulturaPass! The notification system keeps me 
+                        updated on upcoming events, and the secure payment process gives me peace of mind."
+                    </p>
+                </div>
+
+                <!-- Testimonial 8 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">AK</div>
+                        <div class="testimonial-info">
+                            <h4>Alex Kim</h4>
+                            <span class="testimonial-category">Event Explorer</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "CulturaPass has become my one-stop shop for all cultural events. The variety of 
+                        categories and easy search make finding the perfect event effortless. Love it!"
+                    </p>
+                </div>
+
+                <!-- Duplicate for infinite scroll effect -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">SJ</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah Johnson</h4>
+                            <span class="testimonial-category">Music Enthusiast</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "CulturaPass makes booking so easy! The QR code feature is brilliant - no more printed tickets. 
+                        I've attended over 15 concerts this year and the experience has been seamless every time."
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">MT</div>
+                        <div class="testimonial-info">
+                            <h4>Mike Thompson</h4>
+                            <span class="testimonial-category">Film Buff</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Best event platform I've used! Great selection of workshops and film screenings. 
+                        The interface is intuitive and finding events in my area is super convenient."
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">EL</div>
+                        <div class="testimonial-info">
+                            <h4>Emma Lee</h4>
+                            <span class="testimonial-category">Theater Fan</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "The clean interface and seamless booking process make CulturaPass my go-to for theater tickets. 
+                        Customer support is responsive and helpful whenever I have questions."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+<script>
+    // Scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.event-card, .service-card, .testimonial-card, .hero-event-card').forEach(el => {
+        observer.observe(el);
+    });
+</script>
+}

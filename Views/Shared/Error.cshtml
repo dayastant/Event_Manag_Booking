@@ -1,0 +1,44 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .error-container {
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2rem;
+        }
+        a {
+            color: #fff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>Oops!</h1>
+        <p>An error occurred while processing your request.</p>
+        <p><a href="@Url.Action("Index", "Home")">Return to Home</a></p>
+    </div>
+</body>
+</html>
